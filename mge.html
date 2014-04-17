@@ -9,6 +9,7 @@
 	    src="js/dygraph-combined.js"></script>
   </head>
   <body>
+    <div id="title">Madison Gas & Electric Wholeasale Electricity Price</div>
     <div id="graphdiv"></div>
     <center>
     <p><b>Show Series:</b></p>
@@ -63,7 +64,7 @@ Each day is represented by its average price for both the real-time and day-ahea
 
 <h3>Graphing Toolkit</h3>
 <p>
-The data was pulled from MISO's website and loaded into a sqlite3 database.  The database is pushed to a csv file that <a href="http://dygraphs.com/"> dygraphs </a> can read.  Great examples where provided to easily add the needed options to get a beautiful display.
+The data was pulled from MISO's website and loaded into a sqlite3 database.  The database is pushed to a csv file that <a href="http://dygraphs.com/"> dygraphs </a> can read.  Great examples were provided to easily add the needed options to get a beautiful display.
 </p>
 
 <h3>Tools</h3>
@@ -73,7 +74,7 @@ If your interested to do research with this data, I have packaged all the LMP da
 eanderson4 at wisc dot edu
 
 <h4>Future Investigation</h4>
-Have a particular node your interested in?  Let me know!  It is easy to run the numbers, but there are many to choose from.  
+Have a particular node (location i.e. minneapolis) your interested in?  Let me know!  It is easy to run the numbers, but there are many to choose from.  
 <p><b>Up Next</b></p>
 <ul>
   <li>Kewaunee - Nuclear plant which was recently shut down</li>
@@ -85,7 +86,6 @@ Have a particular node your interested in?  Let me know!  It is easy to run the 
       document.getElementById("graphdiv"),
       "data/mge-full.txt", // path to CSV file
       {
-      title: 'Madison Gas and Electric Wholesale Electricity Price',
       rollPeriod: 7,
       showRoller: true,
       customBars: true,

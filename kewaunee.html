@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>MISO - Kewaunee Power Station</title>
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+    
+    <script type="text/javascript"
+	    src="js/dygraph-combined.js"></script>
+  </head>
+  <body>
+
+
+    <div id="title">Kewaunee Nuclear Plant</div>
+<h3>Summary</h3>
+<p>The fourth nuclear power plant built in Wisconsin was shut down on May 7th, 2013.  The reason's behind the shutdown have been cited as the falling electricity prices due to cheaper natural gas.  Since nuclear plants operate at a high capacity factory, it is relatively easy to calculate the approximate revenues it would make from the sale of electricity over the year.  The electricity can be sold in long-term bi-lateral contracts, in the day-ahead market, as well as the real-time market.  Since these plants have low ramping capabilities, most of the electricity sales will be associated with the first two markets. (Citation needed)
+</p>
+<p>
+Background and history of the plant can be found at wikipedia for the <a href="http://en.wikipedia.org/wiki/Kewaunee_Power_Station">Kewaunee Power Station</a>
+<p>
+What follows will be an economic analysis of the generator node in MISO that the power plant was associated with.  The goals will be as follows
+<ul>
+  <li>Estimate the annual loss of revenue associated with the drop in wholesale prices</li>
+  <ul>
+    <li>Use information about capacity and capacity factor to estimate power production</li>
+    <li>Make assumption of what markets it operates in (Day-Ahead market)</li>
+  </ul>
+  <li>Discussion on other factors around the shut-down</li>
+  <ul>
+    <li>The power output from this plant will be mostly replaced with coal and natural gas leading to a relatively increase in carbon output for the power demanded in the region.</li>
+    <li>Where they losing money already? What projections where they using for future electricity prices and what role does that have in there decision to close?</li>
+  </ul>
+</ul>
+
+
+<h4>MISO Node</h4>
+Searching through the list of MISO nodes, WPS.KEWAUKEWA seems to have similiar name features.  WPS is related to the organization entity that is responsible for that node.  Here, WPS stands for Wisconsin Public Service and was the original operator of the nuclear power plant in wisconsin.
+
+    <div id="graphdiv"></div>
+    <center>
+    <p><b>Show Series:</b></p>
+    <p>
+      <input type=checkbox id="0" checked onClick="change(this)">
+      <label for="0"> Day-Ahead</label></br>
+      <input type=checkbox id="1" onClick="change(this)">
+      <label for="1"> Real-Time</label></br>
+    </p>
+    <p><b>Rolling Averages:</b></p>
+    <a href="#" id="day" onClick="daily()">Daily</a>
+    <a href="#" id="week" onClick="weekly()">Weekly</a>
+    <a href="#" id="month" onClick="monthly()">Monthly</a>
+    <a href="#" id="year" onClick="yearly()">Yearly</a>
+    </center>
+
+<h3>Price-Duration Curve</h3>
+A useful visual to understand their annual revenue loss is the price-duration curve.  A load-duration curve is commonly used in power system analysis to understand the relative amount of time the system has a given demand.  It is useful to show which power plants will be dispatched for various levels of load and for approximately how much time per year.  The price-duration curve is a similiar concept, which instead of load being used, the price will be.
+
+
+
+<h4>Other Analysis</h4>
+<ul>
+  <li><a href="mge.html">Madison Gas and Electric</a></li>
+</ul>
+
+    
+    <script type="text/javascript">
+      var kwe_annote = [
+      {
+      series: "Day-Ahead Price",
+      x: "2013-05-07",
+      shortText: "A",
+      text: "Kewaunee Permanently Closed"
+      }
+      ];
+
+      g2 = new Dygraph(
+      document.getElementById("graphdiv"),
+      "data/kwe.txt", // path to CSV file
+      {
+      rollPeriod: 7,
+      showRoller: true,
+      customBars: true,
+      ylabel: 'Price ($/MW)',
+      showRangeSelector: true,
+      visibility: [true, false],
+      title: 'Time-Series of Wholesale Prices for Kewaunee',
+      drawCallback: function(g2, is_initial) {
+       if (!is_initial) return;
+       g2.setAnnotations( kwe_annote );
+      }
+
+      }          // options
+      );
+      setStatus();
+//      var anns = g2.annotations();
+//      anns.push(kwe_annote);
+//      g2.setAnnotations(anns);
+
+      
+      function setStatus() {
+       document.getElementById("visibility").innerHTML = 
+        g2.visibility().toString();
+      }
+
+      function change(el) {
+       g2.setVisibility(parseInt(el.id), el.checked);;
+       setStatus();
+      }
+
+      function daily() { g2.updateOptions({rollPeriod: 1}); };
+      function weekly() { g2.updateOptions({rollPeriod: 7}); };
+      function monthly() { g2.updateOptions({rollPeriod: 30}); };
+      function yearly() { g2.updateOptions({rollPeriod: 365}); };
+    </script>
+  </body>
+</html>

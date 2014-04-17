@@ -9,7 +9,11 @@
 	    src="js/dygraph-combined.js"></script>
   </head>
   <body>
-    <div id="title">Madison Gas & Electric Wholesale Electricity Price</div>
+    <div id="title">Madison Gas & Electric</div>
+<h3>Summary</h3>
+<p>
+Here are the wholesale prices for utilitiy Madison Gas and Electric.  The prices on the grid are decided by an independent entity know as Midwest Independent Systems Operators (MISO).  They clear the market for bulk electricity in two stages, a day-ahead market and a real-time market.  The real-time market is on a rolling 5 minute basis, so every 5 minutes they have to clear a market which involves finance calculations and more differently power flow equations.  The day-ahead market is equally as difficult and is more about strategic decisions for the future uncertain demand.  
+
     <div id="graphdiv"></div>
     <center>
     <p><b>Show Series:</b></p>
@@ -28,9 +32,7 @@
     <a href="#" id="year" onClick="yearly()">Yearly</a>
     </center>
 
-<h3>Summary</h3>
-<p>
-Here are the wholesale prices for utilitiy Madison Gas and Electric.  The prices on the grid are decided by an independent entity know as Midwest Independent Systems Operators (MISO).  They clear the market for bulk electricity in two stages, a day-ahead market and a real-time market.  The real-time market is on a rolling 5 minute basis, so every 5 minutes they have to clear a market which involves finance calculations and more differently power flow equations.  The day-ahead market is equally as difficult and is more about strategic decisions for the future uncertain demand.  
+
 
     <h3>Interesting Features</h3>
 <ul>
@@ -41,11 +43,15 @@ Here are the wholesale prices for utilitiy Madison Gas and Electric.  The prices
   </ul>
   <li>The first quarter of 2014 has large price spikes, which follow a period of relatively low volatility</li>
   <ul>
-    <li>What happened? Long term generator outages?, shut down of plants? Long term line outages? </li>
+    <li>What happened? Long term generator outages? Unplanned shut down of plants? Long term line outages? Unplanned loss of lines? Wholesale fuel prices? </li>
   </ul>
   <li>Using the yearly rolling averages, it can be seen that the residential rates are consistently climbing while wholesale prices have fallen and stayed low over the same period</li>
   <ul>
     <li>Is there an explanation for this?  Renewable targets? Building new generators? Standard rate-increase tactics? </li>
+    <li>Here is <a href="http://www.mge.com/about-mge/electricity/elec-from.htm">MGE's current sourcing</a> for electricity</li>
+    <ul>
+      <li>As such, since only around 1/4 of it is purchased electricity, its average weighted cost of electricity will only be partially affected by the wholesale prices of electricity.</li>
+    </ul>
   </ul>
 </ul>
   
@@ -77,7 +83,7 @@ eanderson4 at wisc dot edu
 Have a particular node (location i.e. minneapolis) your interested in?  Let me know!  It is easy to run the numbers, but there are many to choose from.  
 <p><b>Up Next</b></p>
 <ul>
-  <li>Kewaunee - Nuclear plant which was recently shut down</li>
+  <li><a href="kewaunee.html">Kewaunee</a> - Nuclear plant which was recently shut down</li>
   <li>Analysis of which nodes to do!</li>
 </ul>
 
@@ -92,7 +98,8 @@ Have a particular node (location i.e. minneapolis) your interested in?  Let me k
       customBars: true,
       ylabel: 'Price ($/MW)',
       showRangeSelector: true,
-      visibility: [true, false, true]
+      visibility: [true, false, true],
+      title: 'Time-Series of Wholesale Prices for MGE'
       }          // options
       );
       setStatus();

@@ -54,8 +54,37 @@ Searching through the list of MISO nodes, WPS.KEWAUKEWA seems to have similiar n
 
 <h3>Price-Duration Curve</h3>
 A useful visual to understand their annual revenue loss is the price-duration curve.  A load-duration curve is commonly used in power system analysis to understand the relative amount of time the system has a given demand.  It is useful to show which power plants will be dispatched for various levels of load and for approximately how much time per year.  The price-duration curve is a similiar concept, which instead of load being used, the price will be.
+<center>
+<table>
+<tr>
+<td>
+    <div id="ddiv"></div>
 
-
+</td>
+<td>
+    <p><b>Show Series:</b></p>
+    <p>
+      <input type=checkbox id="0" checked onClick="change2(this)">
+      <label for="0"> 2006</label></br>
+      <input type=checkbox id="1" checked onClick="change2(this)">
+      <label for="1"> 2007</label></br>
+      <input type=checkbox id="2" onClick="change2(this)">
+      <label for="2"> 2008</label></br>
+      <input type=checkbox id="3" onClick="change2(this)">
+      <label for="3"> 2009</label></br>
+      <input type=checkbox id="4" checked onClick="change2(this)">
+      <label for="4"> 2010</label></br>
+      <input type=checkbox id="5" checked onClick="change2(this)">
+      <label for="5"> 2011</label></br>
+      <input type=checkbox id="6" onClick="change2(this)">
+      <label for="6"> 2012</label></br>
+      <input type=checkbox id="7" onClick="change2(this)">
+      <label for="7"> 2013</label></br>
+    </p>
+</td>
+</tr>
+</table>
+</center>
 
 <h4>Other Analysis</h4>
 <ul>
@@ -72,6 +101,7 @@ A useful visual to understand their annual revenue loss is the price-duration cu
       text: "Kewaunee Permanently Closed"
       }
       ];
+
 
       g2 = new Dygraph(
       document.getElementById("graphdiv"),
@@ -91,10 +121,26 @@ A useful visual to understand their annual revenue loss is the price-duration cu
 
       }          // options
       );
+      g = new Dygraph(
+      document.getElementById("ddiv"),
+      "data/kwe-price.txt", // path to CSV file
+      {
+      ylabel: 'Price ($/MW)',
+      xlabel: 'Hours',
+      visibility: [true, true, false, false, true, true, false, false],
+      title: 'Day-Ahead Price Duration Curves for Kewaunee',
+      showRangeSelector: true,
+      strokeWidth: 1.725
+      }
+      );
+
       setStatus();
+
 //      var anns = g2.annotations();
 //      anns.push(kwe_annote);
 //      g2.setAnnotations(anns);
+
+
 
       
       function setStatus() {
@@ -106,11 +152,17 @@ A useful visual to understand their annual revenue loss is the price-duration cu
        g2.setVisibility(parseInt(el.id), el.checked);;
        setStatus();
       }
+      function change2(el) {
+       g.setVisibility(parseInt(el.id), el.checked);;
+       setStatus();
+      }
 
       function daily() { g2.updateOptions({rollPeriod: 1}); };
       function weekly() { g2.updateOptions({rollPeriod: 7}); };
       function monthly() { g2.updateOptions({rollPeriod: 30}); };
       function yearly() { g2.updateOptions({rollPeriod: 365}); };
+
+
     </script>
   </body>
 </html>

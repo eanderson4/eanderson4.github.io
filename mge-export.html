@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>MISO - Madison Gas and Electric</title>
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+    
+    <script type="text/javascript"
+	    src="js/dygraph-combined.js"></script>
+    <script type="text/javascript"
+	    src="js/dygraph-extra.js"></script>
+
+
+  </head>
+  <body>
+    <div id="title">Madison Gas & Electric</div>
+<h3>Export this graph!</h3>
+
+    <table><tr><td>
+    <div id="graphdiv"></div>
+    <center>
+    <p><b>Show Series:</b></p>
+    <p>
+      <input type=checkbox id="0" checked onClick="change(this)">
+      <label for="0"> Day-Ahead</label></br>
+      <input type=checkbox id="1" onClick="change(this)">
+      <label for="1"> Real-Time</label></br>
+      <input type=checkbox id="2" checked onClick="change(this)">
+      <label for="2"> Residential</label>
+    </p>
+    <p><b>Rolling Averages:</b></p>
+    <a href="#" id="day" onClick="daily()">Daily</a>
+    <a href="#" id="week" onClick="weekly()">Weekly</a>
+    <a href="#" id="month" onClick="monthly()">Monthly</a>
+    <a href="#" id="year" onClick="yearly()">Yearly</a>
+    </center>
+
+	</td><td valign=top>
+	  <div id="status" style="width:200px; font-size:0.8em; padding-top:5px;"></div>
+	</td>
+    </tr></table>
+    <hr/>
+    <h3>PNG Image</h3>
+    
+    <div id="notsupported" style="display: none;">
+      <h4>Sorry, browser not supported</h4>
+      <p>In order to export a <code>dygraph</code> as an image you need a
+	browser that supports the canvas API and the <a href="http://www.w3.org/TR/html5/the-canvas-element.html#dom-canvas-todataurl">canvas.toDataURL</a>
+	method. Unfortunately, <a href="http://code.google.com/p/explorercanvas/">excanvas</a>
+	does not support this method and old versions of Internet Explorer (IE6 to IE8)
+	are not supported.</p>
+    </div>
+    
+    <div id="export-div">
+      <p><button id="update-img">Create</button> (<em>Hint: Update above graph to desired settings and hit create</em>)</p>
+      <table><tr><td>
+	    <img id="demoimg"/>
+	  </td><td valign=top>
+	    <div style="width:200px; font-size:0.8em; padding-top:5px;"></div>
+	  </td>
+      </tr></table>
+    </div>
+    Right click image and <b>save image as</b>
+    
+    
+    
+    <script type="text/javascript">
+
+      g = new Dygraph(
+      document.getElementById("graphdiv"),
+      "data/mge-full.txt", // path to CSV file
+      {
+      rollPeriod: 7,
+      showRoller: true,
+      customBars: true,
+      ylabel: 'Price ($/MW)',
+      showRangeSelector: true,
+      visibility: [true, false, true],
+      title: 'Time-Series of Wholesale Prices for MGE'
+      }          // options
+      );      
+
+
+      function setStatus() {
+       document.getElementById("visibility").innerHTML = 
+        g.visibility().toString();
+      }
+
+      function change(el) {
+       g.setVisibility(parseInt(el.id), el.checked);;
+       setStatus();
+      }
+
+      function daily() { g.updateOptions({rollPeriod: 1}); };
+      function weekly() { g.updateOptions({rollPeriod: 7}); };
+      function monthly() { g.updateOptions({rollPeriod: 30}); };
+      function yearly() { g.updateOptions({rollPeriod: 365}); };
+
+
+
+      function createImage(){if(!Dygraph.Export.isSupported()){var notsupported=document.getElementById('notsupported');notsupported.style.display='block';var exportDiv=document.getElementById('export-div');exportDiv.style.display='none';return;}
+      var img=document.getElementById('demoimg')
+      Dygraph.Export.asPNG(g,img);}
+      var btn=document.getElementById("update-img")
+      btn.onclick=function(){createImage()}
+      createImage()
+    </script>
+  </body>
+</html>

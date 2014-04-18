@@ -12,3 +12,33 @@
 	 padding-left:30px;
 	 
 }
+.annotation {
+    font-size: 12px !important;
+}
+
+
+svg {
+    font: 10px sans-serif;
+    display: block;
+    margin: auto;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.xaxis path,
+.xaxis line,
+.yaxis path,
+.yaxis line{
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+    }
+
+.xaxis text,
+.yaxis text {
+    font-family: sans-serif;
+    font-size: 11px;
+    }

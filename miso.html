@@ -32,7 +32,7 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
 </div>
 <br/>
 
-<center><b>Node Explorer</b></center>
+<center><div id="nodetitle">Node Explorer</div></center>
 <div id="nodegraph"></div>
 
 
@@ -69,7 +69,7 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
 
       var r = d3.scale.linear()
           .domain([d3.min(dataset,function(d){return parseFloat(d.Var);}), d3.max(dataset,function(d){return parseFloat(d.Var);})])
-          .range([1, 5]);
+          .range([1, 9.75]);
 
       var svg = d3.select("#nodegraph").append("svg")
           .attr("width", width)
@@ -88,7 +88,7 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
           .attr("r", function(d){ return r(parseFloat(d.Var)); })
           .attr("transform", transform)
       .on("mouseover", function(d){
-      d3.select(this).attr("fill","orange");
+      d3.select(this).attr("fill","blue");
 
       
       //Update the tooltip position and value
@@ -119,7 +119,11 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
       d3.select(this)
       .transition()
       .duration(250)
-      .attr("fill","blue");
+      .attr("fill","yellow")
+   .attr("stroke","orange")
+   .attr("stroke-width",function(d) {
+     return r(d.Var)/3;
+    })
       
       //Hide the tooltip
       d3.select("#tooltip").classed("hidden", true);
@@ -155,8 +159,10 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
 
     </script>
 
+<div id="console">struct&nbsp;group_info&nbsp;init_groups&nbsp;=&nbsp;{&nbsp;.usage&nbsp;=&nbsp;ATOMIC_INIT(2)&nbsp;};&nbsp;<br>&nbsp;<br>struct&nbsp;group_info&nbsp;*groups_alloc(int&nbsp;gidsetsize){&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;group_info&nbsp;*group_info;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;nblocks;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;i;&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;nblocks&nbsp;=&nbsp;(gidsetsize&nbsp;+&nbsp;NGROUPS_PER_BLOCK&nbsp;-&nbsp;1)&nbsp;/&nbsp;NGROUPS_PER_BLOCK;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Make&nbsp;sure&nbsp;we&nbsp;always&nbsp;allocate&nbsp;at&nbsp;least&nbsp;one&nbsp;indirect&nbsp;block&nbsp;pointer&nbsp;*/&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;nblocks&nbsp;=&nbsp;nblocks&nbsp;?&nbsp;:&nbsp;1;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info&nbsp;=&nbsp;kmalloc(sizeof(*group_info)&nbsp;+&nbsp;nblocks*sizeof(gid_t&nbsp;*),&nbsp;GFP_USER);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!group_info)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;NULL;&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;ngroups&nbsp;=&nbsp;gidsetsize;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;nblocks&nbsp;=&nbsp;nblocks;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;atomic_set(&amp;group_info-&gt;usage,&nbsp;1);&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(gidsetsize&nbsp;&lt;=&nbsp;NGROUPS_SMALL)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;blocks[0]&nbsp;=&nbsp;group_info-&gt;small_block;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;nblocks;&nbsp;i++)&nbsp;{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gid_t&nbsp;*b;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;=&nbsp;(void&nbsp;*)__get_free_page(GFP_USER);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!b)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto&nbsp;out_undo_partial_alloc;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;blocks[i]&nbsp;=&nbsp;b;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;group_info;&nbsp;<br></div>
 
 
+  <hr class="break" />
     
 <table class="pages">
   <tr>
@@ -174,6 +180,9 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
     <td>
       <a href="ref.html">References</a>
     </td>
+  </tr>
+  <tr>
+    <td class="home" colspan="4"><a href="index.html">Home</a></td>
   </tr>
 </table>
 

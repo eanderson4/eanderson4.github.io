@@ -5,6 +5,12 @@
 	 margin-right:auto;
 }
 
+#nodetitle {
+    font-weight:bold;
+    font-size:135%;
+    padding-bottom:20px;
+}
+
 #title {
 	 font-weight: bold;
 	 font-size: 183%;
@@ -29,6 +35,11 @@ svg {
     pointer-events: all;
 }
 
+#console {
+    padding-top:32px;
+    font-size:10px;
+}
+
 .xaxis path,
 .xaxis line,
 .yaxis path,
@@ -45,7 +56,7 @@ svg {
     }
 table.pages {
     margin:auto;
-    margin-top:50px;
+    margin-top:2.5px;
 }
 table.pages td{
     padding-left:15px;
@@ -55,8 +66,13 @@ table.pages td{
 table.pages td.linktitle{
     padding-left:15px;
     padding-right:15px;
+    padding-bottom:25.7px;
     text-align:center;
     font-size:20px;
+}
+hr.break{
+    margin-top:17.235px;
+    margin-bottom:5.75px;
 }
 
 #tooltip {

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>MISO - Kewaunee Power Station</title>
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+    
+    <script type="text/javascript"
+	    src="js/dygraph-combined.js"></script>
+  </head>
+  <body>
+
+
+    <div id="title">Regions</div>
+<h3>Summary</h3>
+<p>Hah
+</p>
+<p>
+Economic analysis of the generator node in MISO.  The goals will be as follows
+
+    <div id="graphdiv"></div>
+    <center>
+    <p><b>Show Series:</b></p>
+    <p>
+      <table>
+	<tr>
+	  <td>
+	    <input type=checkbox id="0" checked onClick="change(this)">
+	    <label for="0">Illinois DA</label></br>
+	    <input type=checkbox id="1" checked onClick="change(this)">
+	    <label for="1">Michigan DA</label></br>
+	    <input type=checkbox id="2" checked onClick="change(this)">
+	    <label for="2">Minnesota DA</label></br>
+	  </td>
+	  <td>
+	    <input type=checkbox id="3" onClick="change(this)">
+	    <label for="3">Illinois RT</label></br>
+	    <input type=checkbox id="4" onClick="change(this)">
+	    <label for="4">Michigan RT</label></br>
+	    <input type=checkbox id="5" onClick="change(this)">
+	    <label for="5">Minnesota RT</label></br>
+	  </td>
+	</tr>
+      </table>
+    </p>
+    <p><b>Rolling Averages:</b></p>
+    <a href="#" id="day" onClick="daily()">Daily</a>
+    <a href="#" id="week" onClick="weekly()">Weekly</a>
+    <a href="#" id="month" onClick="monthly()">Monthly</a>
+    <a href="#" id="year" onClick="yearly()">Yearly</a>
+    </center>
+
+<div id="console">struct&nbsp;group_info&nbsp;init_groups&nbsp;=&nbsp;{&nbsp;.usage&nbsp;=&nbsp;ATOMIC_INIT(2)&nbsp;};&nbsp;<br>&nbsp;<br>struct&nbsp;group_info&nbsp;*groups_alloc(int&nbsp;gidsetsize){&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;group_info&nbsp;*group_info;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;nblocks;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;i;&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;nblocks&nbsp;=&nbsp;(gidsetsize&nbsp;+&nbsp;NGROUPS_PER_BLOCK&nbsp;-&nbsp;1)&nbsp;/&nbsp;NGROUPS_PER_BLOCK;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Make&nbsp;sure&nbsp;we&nbsp;always&nbsp;allocate&nbsp;at&nbsp;least&nbsp;one&nbsp;indirect&nbsp;block&nbsp;pointer&nbsp;*/&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;nblocks&nbsp;=&nbsp;nblocks&nbsp;?&nbsp;:&nbsp;1;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info&nbsp;=&nbsp;kmalloc(sizeof(*group_info)&nbsp;+&nbsp;nblocks*sizeof(gid_t&nbsp;*),&nbsp;GFP_USER);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!group_info)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;NULL;&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;ngroups&nbsp;=&nbsp;gidsetsize;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;nblocks&nbsp;=&nbsp;nblocks;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;atomic_set(&amp;group_info-&gt;usage,&nbsp;1);&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(gidsetsize&nbsp;&lt;=&nbsp;NGROUPS_SMALL)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;blocks[0]&nbsp;=&nbsp;group_info-&gt;small_block;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;nblocks;&nbsp;i++)&nbsp;{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gid_t&nbsp;*b;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;=&nbsp;(void&nbsp;*)__get_free_page(GFP_USER);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!b)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto&nbsp;out_undo_partial_alloc;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;blocks[i]&nbsp;=&nbsp;b;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;group_info;&nbsp;<br></div>
+  
+
+  <hr class="break" />
+
+<table class="pages">
+  <tr>
+    <td class="linktitle" colspan="4" ><b>Pages<b></td>
+  </tr>
+  <tr>
+    <td>
+      <a href="miso.html"><b>Midwest Independent System Operator<b></a>
+    <td>
+      <a href="mge.html">Madison Gas and Electric Loadzone</a>
+    </td>
+    <td>
+      <a href="kwe.html">Kewaunee Nuclear Power Plant</a>
+    </td>
+    <td>
+      <a href="ref.html">References</a>
+    </td>
+  </tr>
+  <tr>
+    <td><a href="reg.html">Regions</a></td>
+  </tr>
+  <tr>
+    <td class="home" colspan="4"><a href="index.html">Home</a></td>
+  </tr>
+</table>
+    
+    <script type="text/javascript">
+
+      g2 = new Dygraph(
+      document.getElementById("graphdiv"),
+      "data/regions.txt", // path to CSV file
+      {
+      rollPeriod: 7,
+      showRoller: true,
+      customBars: true,
+      ylabel: 'Price ($/MW)',
+      visibility: [true, true, true, false, false, false],
+      showRangeSelector: true,
+      title: 'Time-Series of Regional Prices',
+      }          // options
+      );
+
+      setStatus();
+
+//      var anns = g2.annotations();
+//      anns.push(kwe_annote);
+//      g2.setAnnotations(anns);
+
+
+
+      
+      function setStatus() {
+       document.getElementById("visibility").innerHTML = 
+        g2.visibility().toString();
+      }
+
+      function change(el) {
+       g2.setVisibility(parseInt(el.id), el.checked);;
+       setStatus();
+      }
+
+
+      function daily() { g2.updateOptions({rollPeriod: 1}); };
+      function weekly() { g2.updateOptions({rollPeriod: 7}); };
+      function monthly() { g2.updateOptions({rollPeriod: 30}); };
+      function yearly() { g2.updateOptions({rollPeriod: 365}); };
+
+
+    </script>
+  </body>
+</html>

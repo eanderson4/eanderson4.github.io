@@ -46,6 +46,9 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
       }
       else {
       dataset = data;
+      for (var i=0; i < dataset.length; i++){
+		dataset[i].Main=dataset[i].Ex;
+      };
       generateVis();
       }
 
@@ -56,16 +59,16 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
  
       var width = 760,
       height = 400,
-      padding=20;
+      padding=30;
       
 
       var x = d3.scale.linear()
           .domain([0, d3.max(dataset,function(d){ return parseFloat(d.ID); })])
-          .range([padding, width]);
+          .range([padding, width-padding]);
 
       var y = d3.scale.linear()
-          .domain([0, d3.max(dataset,function(d){return parseFloat(d.Min);})])
-          .range([height, 0]);
+          .domain([0, d3.max(dataset,function(d){return parseFloat(d.Main);})])
+          .range([height-padding, padding]);
 
       var r = d3.scale.linear()
           .domain([d3.min(dataset,function(d){return parseFloat(d.Var);}), d3.max(dataset,function(d){return parseFloat(d.Var);})])
@@ -85,7 +88,7 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
       var circle = svg.selectAll("circle")
           .data(dataset)
         .enter().append("circle")
-          .attr("r", function(d){ return r(parseFloat(d.Var)); })
+          .attr("r", function(d){ return r(parseFloat(d.Var));  })
           .attr("transform", transform)
       .on("mouseover", function(d){
       d3.select(this).attr("fill","blue");
@@ -143,21 +146,82 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
 
       function zoom(scale,translate) {
       circle.attr("transform", transform);
-      svg.select("g.xaxis").call(xAxis);
-      svg.select("g.yaxis").call(yAxis);
+      svg.select("g.xaxis").transition().duration(150).call(xAxis);
+      svg.select("g.yaxis").transition().duration(150).call(yAxis);
       }
 
       function transform(d) {
-        return "translate(" + x(d.ID) + "," + y(d.Min) + ")";
+        return "translate(" + x(d.ID) + "," + y(d.Main) + ")";
       }
-      
+
+
+      d3.select("form")
+      .on("click", function() {
+			j=1;
+			for (var k=0; k < labels[0].length; k++){
+					  if (labels[0][k].checked == true){
+					   j=k;
+					  };
+					  }
+
+			for (var i=0; i < dataset.length; i++){
+			if (j==0){
+			dataset[i].Main=dataset[i].Ex;}
+			if (j==1){
+			dataset[i].Main=dataset[i].Var;}
+			if (j==2){
+			dataset[i].Main=dataset[i].Min;}
+			if (j==3){
+			dataset[i].Main=dataset[i].Max;}
+			if (j==4){
+			dataset[i].Main=dataset[i].Dif;}
+			if (j==5){
+			dataset[i].Main=dataset[i].Neg;}
+			};
+
+		        y.domain([0,d3.max(dataset, function(d) { return parseFloat(d.Main); } ) ] );
+			svg.selectAll("circle")
+			.data(dataset)
+			.transition()
+			.duration(1000)
+			.attr("transform", transform);      
+			svg.select("g.xaxis").call(xAxis);
+			svg.select("g.yaxis").transition().duration(1000).call(yAxis);
+});
+
+
+			var dataType = ["Ex", "Var", "Min", "Max", "Dif", "Neg"], 
+			j = 0; 
+			
+			// Create the shape selectors
+			var form = d3.select("form")
+			
+			labels = form.selectAll("label")
+			.data(dataType)
+			.enter()
+			.append("label")
+			.text(function(d) {return d;})
+			.insert("input")
+			.attr({
+			type: "radio",
+			class: "shape",
+			name: "mode",
+			value: function(d, i) {return i;}
+			})
+			.property("checked", function(d, i) { return i===j;});
 
 
 
-      }
-      
+}      
+   </script>
+<br/>
+<center>
+<form name="theform"></form>
+</center>
 
-    </script>
+
+
+
 
 <div id="console">struct&nbsp;group_info&nbsp;init_groups&nbsp;=&nbsp;{&nbsp;.usage&nbsp;=&nbsp;ATOMIC_INIT(2)&nbsp;};&nbsp;<br>&nbsp;<br>struct&nbsp;group_info&nbsp;*groups_alloc(int&nbsp;gidsetsize){&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;group_info&nbsp;*group_info;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;nblocks;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;i;&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;nblocks&nbsp;=&nbsp;(gidsetsize&nbsp;+&nbsp;NGROUPS_PER_BLOCK&nbsp;-&nbsp;1)&nbsp;/&nbsp;NGROUPS_PER_BLOCK;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Make&nbsp;sure&nbsp;we&nbsp;always&nbsp;allocate&nbsp;at&nbsp;least&nbsp;one&nbsp;indirect&nbsp;block&nbsp;pointer&nbsp;*/&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;nblocks&nbsp;=&nbsp;nblocks&nbsp;?&nbsp;:&nbsp;1;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info&nbsp;=&nbsp;kmalloc(sizeof(*group_info)&nbsp;+&nbsp;nblocks*sizeof(gid_t&nbsp;*),&nbsp;GFP_USER);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!group_info)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;NULL;&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;ngroups&nbsp;=&nbsp;gidsetsize;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;nblocks&nbsp;=&nbsp;nblocks;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;atomic_set(&amp;group_info-&gt;usage,&nbsp;1);&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(gidsetsize&nbsp;&lt;=&nbsp;NGROUPS_SMALL)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;blocks[0]&nbsp;=&nbsp;group_info-&gt;small_block;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;nblocks;&nbsp;i++)&nbsp;{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gid_t&nbsp;*b;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;=&nbsp;(void&nbsp;*)__get_free_page(GFP_USER);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!b)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto&nbsp;out_undo_partial_alloc;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;blocks[i]&nbsp;=&nbsp;b;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;group_info;&nbsp;<br></div>
 

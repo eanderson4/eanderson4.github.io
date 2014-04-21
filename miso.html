@@ -35,6 +35,28 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
 <center><div id="nodetitle">Node Explorer</div></center>
 <div id="nodegraph"></div>
 
+<br/>
+<center>
+<table>
+<tr>
+<td>
+X</td>
+<td>
+<div id="xlab">
+</div>
+</td>
+</tr>
+<tr>
+<td>
+Y
+</td>
+<td>
+<div id="ylab">
+</div>
+</td>
+</tr>
+</table>
+</center>
 
     <script type="text/javascript" src="js/d3.v3.js"></script>    
     <script type="text/javascript">
@@ -47,7 +69,8 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
       else {
       dataset = data;
       for (var i=0; i < dataset.length; i++){
-		dataset[i].Main=dataset[i].Ex;
+		dataset[i].MainX=dataset[i].ID;
+		dataset[i].MainY=dataset[i].Ex;
       };
       generateVis();
       }
@@ -63,11 +86,11 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
       
 
       var x = d3.scale.linear()
-          .domain([0, d3.max(dataset,function(d){ return parseFloat(d.ID); })])
+          .domain([0, d3.max(dataset,function(d){ return parseFloat(d.MainX); })])
           .range([padding, width-padding]);
 
       var y = d3.scale.linear()
-          .domain([0, d3.max(dataset,function(d){return parseFloat(d.Main);})])
+          .domain([0, d3.max(dataset,function(d){return parseFloat(d.MainY);})])
           .range([height-padding, padding]);
 
       var r = d3.scale.linear()
@@ -151,53 +174,23 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
       }
 
       function transform(d) {
-        return "translate(" + x(d.ID) + "," + y(d.Main) + ")";
+        return "translate(" + x(d.MainX) + "," + y(d.MainY) + ")";
       }
 
 
-      d3.select("form")
-      .on("click", function() {
-			j=1;
-			for (var k=0; k < labels[0].length; k++){
-					  if (labels[0][k].checked == true){
-					   j=k;
-					  };
-					  }
-
-			for (var i=0; i < dataset.length; i++){
-			if (j==0){
-			dataset[i].Main=dataset[i].Ex;}
-			if (j==1){
-			dataset[i].Main=dataset[i].Var;}
-			if (j==2){
-			dataset[i].Main=dataset[i].Min;}
-			if (j==3){
-			dataset[i].Main=dataset[i].Max;}
-			if (j==4){
-			dataset[i].Main=dataset[i].Dif;}
-			if (j==5){
-			dataset[i].Main=dataset[i].Neg;}
-			};
-
-		        y.domain([0,d3.max(dataset, function(d) { return parseFloat(d.Main); } ) ] );
-			svg.selectAll("circle")
-			.data(dataset)
-			.transition()
-			.duration(1000)
-			.attr("transform", transform);      
-			svg.select("g.xaxis").call(xAxis);
-			svg.select("g.yaxis").transition().duration(1000).call(yAxis);
-});
 
 
-			var dataType = ["Ex", "Var", "Min", "Max", "Dif", "Neg"], 
-			j = 0; 
+			var xType = ["ID","Ex", "Var", "Min", "Max", "Dif", "Neg"];
+			var yType = ["ID","Ex", "Var", "Min", "Max", "Dif", "Neg"];
+			jx = 0; 
+			jy = 1; 
 			
 			// Create the shape selectors
-			var form = d3.select("form")
+			var formx = d3.select("#xlab").append("form");
+			var formy = d3.select("#ylab").append("form");
 			
-			labels = form.selectAll("label")
-			.data(dataType)
+			labels = formy.selectAll("label")
+			.data(yType)
 			.enter()
 			.append("label")
 			.text(function(d) {return d;})
@@ -208,16 +201,89 @@ when $a \ne 0$, there are many solutions to \(ax^2 + bx + c = 0\), or actually j
 			name: "mode",
 			value: function(d, i) {return i;}
 			})
-			.property("checked", function(d, i) { return i===j;});
+			.property("checked", function(d, i) { return i===jy;});
+
+			labels2 = formx.selectAll("label")
+			.data(xType)
+			.enter()
+			.append("label")
+			.text(function(d) {return d;})
+			.insert("input")
+			.attr({
+			type: "radio",
+			class: "shape",
+			name: "mode",
+			value: function(d, i) {return i;}
+			})
+			.property("checked", function(d, i) { return i===jx;});
 
 
+			d3.selectAll("form").on("click", function() {
+			console.log("ERFAS");
+			jy=1;
+			for (var k=0; k < labels[0].length; k++){
+					  if (labels[0][k].checked == true){
+					   jy=k;
+					  };
+					  }
+			jx=1;
+			for (var k=0; k < labels2[0].length; k++){
+					  if (labels2[0][k].checked == true){
+					   jx=k;
+					  };
+					  }
 
-}      
+			for (var i=0; i < dataset.length; i++){
+			if (jy==0){
+			dataset[i].MainY=dataset[i].ID;}
+			if (jy==1){
+			dataset[i].MainY=dataset[i].Ex;}
+			if (jy==2){
+			dataset[i].MainY=dataset[i].Var;}
+			if (jy==3){
+			dataset[i].MainY=dataset[i].Min;}
+			if (jy==4){
+			dataset[i].MainY=dataset[i].Max;}
+			if (jy==5){
+			dataset[i].MainY=dataset[i].Dif;}
+			if (jy==6){
+			dataset[i].MainY=dataset[i].Neg;}
+			if (jx==0){
+			dataset[i].MainX=dataset[i].ID;}
+			if (jx==1){
+			dataset[i].MainX=dataset[i].Ex;}
+			if (jx==2){
+			dataset[i].MainX=dataset[i].Var;}
+			if (jx==3){
+			dataset[i].MainX=dataset[i].Min;}
+			if (jx==4){
+			dataset[i].MainX=dataset[i].Max;}
+			if (jx==5){
+			dataset[i].MainX=dataset[i].Dif;}
+			if (jx==6){
+			dataset[i].MainX=dataset[i].Neg;}
+			};
+
+					  console.log(jx);
+		        x.domain([0,d3.max(dataset, function(d) { return parseFloat(d.MainX); } ) ] );
+		        y.domain([0,d3.max(dataset, function(d) { return parseFloat(d.MainY); } ) ] );
+			svg.selectAll("circle")
+			.data(dataset)
+			.transition()
+			.duration(1000)
+			.attr("transform", transform);      
+			svg.select("g.xaxis").call(xAxis);
+			svg.select("g.yaxis").transition().duration(1000).call(yAxis);
+});
+
+
+}
+
+
+      
    </script>
-<br/>
-<center>
-<form name="theform"></form>
-</center>
+
+
 
 
 

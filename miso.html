@@ -120,7 +120,7 @@ Y
       //Update the tooltip position and value
       var tooltip = d3.select("#tooltip");
       tooltip
-        .style("left", x(d.ID) + "px")
+        .style("left", event.clientX + "px")
         .style("top", event.clientY+.75*padding + "px")
         .select("#name")
         .text(d.Name);

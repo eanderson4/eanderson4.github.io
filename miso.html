@@ -121,12 +121,11 @@ Y
       .on("mouseover", function(d){
       d3.select(this).attr("fill","blue");
 
-      
       //Update the tooltip position and value
       var tooltip = d3.select("#tooltip");
       tooltip
-        .style("left", event.clientX + "px")
-        .style("top", event.clientY+.75*padding + "px")
+        .style("left", x(d.MainX) + "px")
+        .style("top", y(d.MainY) + 8.35*padding + "px")
         .select("#name")
         .text(d.Name);
       

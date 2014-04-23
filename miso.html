@@ -224,7 +224,6 @@ Y
 
 
 			d3.selectAll("form").on("click", function() {
-			console.log("ERFAS");
 			jy=1;
 			for (var k=0; k < labels[0].length; k++){
 					  if (labels[0][k].checked == true){
@@ -269,7 +268,6 @@ Y
 			dataset[i].MainX=dataset[i].Neg;}
 			};
 
-					  console.log(jx);
 		        x.domain([0,d3.max(dataset, function(d) { return parseFloat(d.MainX); } ) ] );
 		        y.domain([0,d3.max(dataset, function(d) { return parseFloat(d.MainY); } ) ] );
 			svg.selectAll("circle")

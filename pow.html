@@ -2,36 +2,56 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Power Systems - Power Flow</title>
+    <title>Power Flow</title>
     <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
     <script type="text/javascript" src="js/d3.v3.js"></script>
   </head>
   <body>
-    <div id="title">Graph Layout</div>
+    <div id="title">Power Flow</div>
     <div id="flowdiv"></div>
 <h3>Visualize Power Flow</h3>
 <p>
 Start with the graph 
-<div id="spacer"></div>
+<div id="spacer">
+Here will go analysis of the grid data
+</div>
 
+Here is a 118 bus grid.
+<div id="tooltipN">
+  <p><strong><span id="name">Important Label Heading</span></strong></p>
+  <p><span id="ni">100</span></p>
+  <p><span id="index">100</span></p>
+</div>
+<div id="tooltipE">
+  <p><strong><span id="name">Important Label Heading</span></strong></p>
+  <p><span id="flow">100</span></p>
+  <p><span id="index">100</span></p>
+</div>
 
 <script type="text/javascript">
 
   var dt;
-
   d3.json("data/case118.json", function(data) {
    dt=data.dataset;
-   console.log(dt);
-   
    makeGraph();
 
   });
 
   function makeGraph() {
   //Width and height
+  var numbus=dt.nodes.length;
   var w = 1000;
-  var h = 600;
 
+  var hscale = d3.scale.linear()
+  .domain([118,400])
+  .range([1,2]);
+
+  var chargescale = d3.scale.linear()
+  .domain([118,400])
+  .range([1,.5]);
+
+  var h = 600*hscale(numbus);
+  d3.select("#spacer").style("height",2.35*h/3+"px");
 
   //Initialize a default force layout, using the nodes and edges in dataset
   var force = d3.layout.force()
@@ -40,19 +60,18 @@ Start with the graph
    .gravity(0.06)
    .size([w, h])
    .linkDistance([50])
-   .charge([-105])
+   .charge([-105*chargescale(numbus)])
    .start();
 
   var colors = d3.scale.category10();
 
       var lW = d3.scale.linear()
           .domain([d3.min(dt.edges,function(d){return Math.abs(d.flow);}), d3.max(dt.edges,function(d){return Math.abs(d.flow);})])
-          .range([1, 5]);
+          .range([2.5, 7]);
 
    var maxD = d3.max(dt.nodes,function(d){ return d.ni; } );
    var maxG = d3.max(dt.nodes,function(d){ return -d.ni; } );
    var max = Math.max(maxD,maxG);
-  console.log(maxD,maxG,max);
 
       var rD = d3.scale.linear()
           .domain([0, max ])
@@ -85,7 +104,29 @@ Start with the graph
   .enter()
   .append("line")
   .style("stroke", "#ccc")
-  .style("stroke-width", function(d) { console.log(d.flow);return lW(Math.abs(d.flow)); } );
+  .style("stroke-width", function(d) { return lW(Math.abs(d.flow)); } )
+      .on("mouseover", function(d){
+      //Update the tooltip position and value
+      var tooltip = d3.select("#tooltipE");
+      tooltip
+        .style("left", (d.source.x+d.target.x)/2 + "10px")
+        .style("top", (d.source.y+d.target.y)/2 + 8.35 + "px")
+        .select("#name")
+        .text("Arc "+d.source.name + " -> " + d.target.name);
+      
+      tooltip.select("#flow")
+        .text("Flow: "+d.flow.toFixed(2));
+
+      tooltip.select("#index").style("font-size","65%")
+        .text("Index: "+d.index);
+
+      //Show the tooltip
+      d3.select("#tooltipE").transition().duration(100).style("opacity",0.9375);
+      })
+    .on("mouseout", function(d){
+    
+      d3.select("#tooltipE").transition().duration(375).style("opacity",0.0);
+    });
 
   //Create nodes as circles
   var nodes = svg.selectAll("circle")
@@ -93,13 +134,34 @@ Start with the graph
   .enter()
   .append("circle")
   .attr("r", function(d) {
-  console.log(d);
   if ( d.ni>=0 ){ return rD(d.ni); }
   else { return rG(-d.ni); }
   })
   .style("fill", function(d){
    if(d.ni>=0){return "blue";}
   else{ return "red"; }})
+      .on("mouseover", function(d){
+      d3.select(this).attr("fill","red");
+
+      //Update the tooltip position and value
+      var tooltip = d3.select("#tooltipN");
+      tooltip
+        .style("left", d.x + "10px")
+        .style("top", d.y + 8.35 + "px")
+        .select("#name")
+        .text("Node: "+d.name);
+      
+      tooltip.select("#ni")
+        .text("Net Inject: "+-d.ni.toFixed(2));
+      tooltip.select("#index").style("font-size","65%")
+        .text("Index: "+d.index);
+
+      //Show the tooltip
+      d3.select("#tooltipN").transition().duration(100).style("opacity",0.9375);
+      })
+    .on("mouseout", function(d){
+      d3.select("#tooltipN").transition().duration(375).style("opacity",0.0);
+    })    
   .call(force.drag);
 
   //Every time the simulation "ticks", this will be called
@@ -123,26 +185,6 @@ Start with the graph
   </script>
 
 
-<blockquote cite="http://www.pserc.cornell.edu//matpower/">
-<h4>Matpower for Matlab</h4>
-<p>
-Great Matlab toolkit for Power Systems
-</p>
-<footer>
--<a href="http://www.pserc.cornell.edu/matpower/">Matpower</a>
-</footer>
-</blockquote>
-
-
-<blockquote cite="https://github.com/eanderson4">
-<h4>Power Suite with CPLEX</h4>
-<p>
-Some basic tools for power flow calculations, a work-in-progress
-</p>
-<footer>
--<a href="https://github.com/eanderson4/pow-opt">Github Repo</a> 
-</footer>
-</blockquote>
 
   <hr class="break" />
 

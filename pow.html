@@ -9,14 +9,26 @@
   <body>
     <div id="title">Power Flow</div>
     <div id="flowdiv"></div>
-<h3>Visualize Power Flow</h3>
-<p>
-Start with the graph 
 <div id="spacer">
-Here will go analysis of the grid data
+  <p><span id="nodes">100</span></p>
+  <p><span id="edges">100</span></p>
+  <p><span id="gens">100</span></p>
+  <p><span id="tdem">100</span></p>
+  <p><span id="tgen">100</span></p>
 </div>
 
-Here is a 118 bus grid.
+<div id="titlescent">Here is a 118 bus grid.</div>
+<br/>
+<select>
+  <option value="data/case14.json">case14</option>
+  <option value="data/case30.json">case30</option>
+  <option value="data/case118.json">case118</option>
+  <option value="data/case300.json">case300</option>
+</select>
+
+
+
+
 <div id="tooltipN">
   <p><strong><span id="name">Important Label Heading</span></strong></p>
   <p><span id="ni">100</span></p>
@@ -25,33 +37,63 @@ Here is a 118 bus grid.
 <div id="tooltipE">
   <p><strong><span id="name">Important Label Heading</span></strong></p>
   <p><span id="flow">100</span></p>
+ <p><span id="X">100</span></p>
   <p><span id="index">100</span></p>
+  <p><span id="index2">100</span></p>
 </div>
 
 <script type="text/javascript">
 
   var dt;
-  d3.json("data/case118.json", function(data) {
+
+  d3.json("data/case14.json", function(data) {
    dt=data.dataset;
+  console.log(dt);
    makeGraph();
 
   });
+
 
   function makeGraph() {
   //Width and height
   var numbus=dt.nodes.length;
   var w = 1000;
 
+  var dist =d3.scale.linear()
+    .domain([d3.min(dt.edges,function(d){return 1/d.X;}), d3.max(dt.edges,function(d){return 1/d.X;})])
+    .range([5, 50]);
+
   var hscale = d3.scale.linear()
-  .domain([118,400])
+  .domain([118,500])
   .range([1,2]);
 
   var chargescale = d3.scale.linear()
   .domain([118,400])
   .range([1,.5]);
 
+
   var h = 600*hscale(numbus);
-  d3.select("#spacer").style("height",2.35*h/3+"px");
+  d3.select("#spacer").style("height",(2.175*h/3+70)+"px");
+
+  var numNodes = dt.nodes.length
+  var numEdges = dt.edges.length
+  var numGens = dt.gens.length
+  var totalDemand = d3.sum(dt.nodes, function(d) { return d.demand; });
+  var totalGen = d3.sum(dt.gens, function(d) { return d.p; });
+  d3.select("#spacer").select("#nodes")
+  .text("Nodes: "+numNodes);
+  d3.select("#spacer").select("#edges")
+  .text("Edges: "+numEdges);
+  d3.select("#spacer").select("#gens")
+  .text("Gens: "+numGens);
+  d3.select("#spacer").select("#tdem")
+  .text("Total Demand: "+totalDemand.toFixed(2));
+  d3.select("#spacer").select("#tgen")
+  .text("Total Gen: "+totalGen.toFixed(2));
+
+  d3.select("#titlescent")
+  .text("This is a "+numNodes+" bus grid.");
+
 
   //Initialize a default force layout, using the nodes and edges in dataset
   var force = d3.layout.force()
@@ -59,7 +101,12 @@ Here is a 118 bus grid.
    .links(dt.edges)
    .gravity(0.06)
    .size([w, h])
-   .linkDistance([50])
+   .linkDistance(
+function(d) { 
+  console.log(d);
+  return dist(1/d.X);
+  }
+)
    .charge([-105*chargescale(numbus)])
    .start();
 
@@ -94,6 +141,8 @@ Here is a 118 bus grid.
 		    }
 
   //Create SVG element
+    
+    d3.select("svg").remove();
   var svg = d3.select("#flowdiv").append("svg")
   .attr("width", w)
   .attr("height", h);
@@ -117,8 +166,14 @@ Here is a 118 bus grid.
       tooltip.select("#flow")
         .text("Flow: "+d.flow.toFixed(2));
 
+      tooltip.select("#X")
+        .text("X: "+d.X);
+
       tooltip.select("#index").style("font-size","65%")
         .text("Index: "+d.index);
+    
+      tooltip.select("#index2").style("font-size","65%")
+        .text("Index: "+d.source.index + " -> " + d.target.index);
 
       //Show the tooltip
       d3.select("#tooltipE").transition().duration(100).style("opacity",0.9375);
@@ -179,6 +234,26 @@ Here is a 118 bus grid.
   // .attr("cy", function(d) { return d.y; });
 
   });
+
+    console.log("here");
+    sel=d3.selectAll("select").on("change",change);
+
+    function change(){
+    console.log(sel.property("value"));
+    var selection=sel.property("value");
+    
+    d3.json(selection, function(data) {
+    dt=data.dataset;
+    console.log(dt);
+    makeGraph();
+    
+    });
+
+
+    
+    }
+
+
 
 }
 

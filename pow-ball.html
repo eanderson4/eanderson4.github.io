@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Power Flow</title>
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+    <script type="text/javascript" src="js/d3.v3.js"></script>
+  </head>
+  <body>
+    <div id="title">Power Flow</div>
+    <div id="flowdiv"></div>
+<div id="spacer">
+  <div>
+  <p><span id="nodes">100</span></p>
+  <p><span id="edges">100</span></p>
+  <p><span id="gens">100</span></p>
+  <p><span id="tdem">100</span></p>
+  <p><span id="tgen">100</span></p>
+  </div>
+</div>
+
+Here is a 2383 bus grid.
+<div id="tooltipN">
+  <p><strong><span id="name">Important Label Heading</span></strong></p>
+  <p><span id="ni">100</span></p>
+  <p><span id="index">100</span></p>
+</div>
+<div id="tooltipE">
+  <p><strong><span id="name">Important Label Heading</span></strong></p>
+  <p><span id="flow">100</span></p>
+  <p><span id="X">100</span></p>
+  <p><span id="index">100</span></p>
+  <p><span id="index2">100</span></p>
+</div>
+
+<script type="text/javascript">
+
+  var dt;
+  d3.json("data/case2383.json", function(data) {
+   dt=data.dataset;
+   makeGraph();
+
+  });
+
+  function makeGraph() {
+  //Width and height
+  var numbus=dt.nodes.length;
+  var w = 1200;
+  var h = 1000;
+
+  var numNodes = dt.nodes.length
+  var numEdges = dt.edges.length
+  var numGens = dt.gens.length
+  var totalDemand = d3.sum(dt.nodes, function(d) { return d.demand; });
+  var totalGen = d3.sum(dt.gens, function(d) { return d.p; });
+  d3.select("#spacer").select("#nodes")
+  .text("Nodes: "+numNodes);
+  d3.select("#spacer").select("#edges")
+  .text("Edges: "+numEdges);
+  d3.select("#spacer").select("#gens")
+  .text("Gens: "+numGens);
+  d3.select("#spacer").select("#tdem")
+  .text("Total Demand: "+totalDemand.toFixed(2));
+  d3.select("#spacer").select("#tgen")
+  .text("Total Gen: "+totalGen.toFixed(2));
+
+  var dist =d3.scale.linear()
+    .domain([d3.min(dt.edges,function(d){return 1/d.X;}), d3.max(dt.edges,function(d){return 1/d.X;})])
+    .range([5, 100]);
+
+  d3.select("#spacer").style("height",1000+"px");
+
+  //Initialize a default force layout, using the nodes and edges in dataset
+  var force = d3.layout.force()
+   .nodes(dt.nodes)
+   .links(dt.edges)
+   .gravity(0.06)
+   .size([w, h])
+  .linkDistance(
+  function(d) { 
+  console.log(d);
+  return dist(1/d.X);
+  }
+  )
+   .charge([-5.975])
+   .start();
+
+  var colors = d3.scale.category10();
+
+      var lW = d3.scale.linear()
+          .domain([d3.min(dt.edges,function(d){return Math.abs(d.flow);}), d3.max(dt.edges,function(d){return Math.abs(d.flow);})])
+          .range([2.5, 7]);
+
+   var maxD = d3.max(dt.nodes,function(d){ return d.ni; } );
+   var maxG = d3.max(dt.nodes,function(d){ return -d.ni; } );
+   var max = Math.max(maxD,maxG);
+
+      var rD = d3.scale.linear()
+          .domain([0, max ])
+          .range([3, 13]);
+
+      var rG = d3.scale.linear()
+          .domain([0, max ])
+          .range([3, 13]);
+
+  for (var i=0; i<dt.nodes.length;i++)
+		    {
+		    if (dt.nodes[i].ni >= 0 )
+    {
+    dt.nodes[i].r = rD(dt.nodes[i].ni);
+    }
+    else 
+    {
+    dt.nodes[i].r = rG(-dt.nodes[i].ni);
+    }
+		    }
+
+  //Create SVG element
+  var svg = d3.select("#flowdiv").append("svg")
+  .attr("width", w)
+  .attr("height", h);
+
+  //Create edges as lines
+  var edges = svg.selectAll("line")
+  .data(dt.edges)
+  .enter()
+  .append("line")
+  .style("stroke", "#ccc")
+  .style("stroke-width", function(d) { return lW(Math.abs(d.flow)); } )
+      .on("mouseover", function(d){
+      //Update the tooltip position and value
+      var tooltip = d3.select("#tooltipE");
+      tooltip
+        .style("left", (d.source.x+d.target.x)/2 + "10px")
+        .style("top", (d.source.y+d.target.y)/2 + 8.35 + "px")
+        .select("#name")
+        .text("Arc "+d.source.name + " -> " + d.target.name);
+      
+      tooltip.select("#flow")
+        .text("Flow: "+d.flow.toFixed(2));
+
+      tooltip.select("#X")
+        .text("X: "+d.X);
+
+      tooltip.select("#index").style("font-size","65%")
+        .text("Index: "+d.index);
+    
+      tooltip.select("#index2").style("font-size","65%")
+        .text("Index: "+d.source.index + " -> " + d.target.index);
+
+      //Show the tooltip
+      d3.select("#tooltipE").transition().duration(100).style("opacity",0.9375);
+      })
+    .on("mouseout", function(d){
+    
+      d3.select("#tooltipE").transition().duration(375).style("opacity",0.0);
+    });
+
+  //Create nodes as circles
+  var nodes = svg.selectAll("circle")
+  .data(dt.nodes)
+  .enter()
+  .append("circle")
+  .attr("r", function(d) {
+  if ( d.ni>=0 ){ return rD(d.ni); }
+  else { return rG(-d.ni); }
+  })
+  .style("fill", function(d){
+   if(d.ni>=0){return "blue";}
+  else{ return "red"; }})
+      .on("mouseover", function(d){
+      d3.select(this).attr("fill","red");
+
+      //Update the tooltip position and value
+      var tooltip = d3.select("#tooltipN");
+      tooltip
+        .style("left", d.x + "10px")
+        .style("top", d.y + 8.35 + "px")
+        .select("#name")
+        .text("Node: "+d.name);
+      
+      tooltip.select("#ni")
+        .text("Net Inject: "+-d.ni.toFixed(2));
+      tooltip.select("#index").style("font-size","65%")
+        .text("Index: "+d.index);
+
+      //Show the tooltip
+      d3.select("#tooltipN").transition().duration(100).style("opacity",0.9375);
+      })
+    .on("mouseout", function(d){
+      d3.select("#tooltipN").transition().duration(375).style("opacity",0.0);
+    })    
+  .call(force.drag);
+
+  //Every time the simulation "ticks", this will be called
+  force.on("tick", function() {
+  
+  nodes.attr("cx", function(d) { return d.x = Math.max(d.r, Math.min(w - d.r, d.x)); })
+  .attr("cy", function(d) { return d.y = Math.max(d.r, Math.min(h - d.r, d.y)); });
+
+  edges.attr("x1", function(d) { return d.source.x; })
+   .attr("y1", function(d) { return d.source.y; })
+   .attr("x2", function(d) { return d.target.x; })
+   .attr("y2", function(d) { return d.target.y; });
+
+  //nodes.attr("cx", function(d) { return d.x; })
+  // .attr("cy", function(d) { return d.y; });
+
+  });
+
+
+}
+
+  </script>
+
+
+
+  <hr class="break" />
+
+<table class="pages">
+  <tr>
+    <td class="linktitle" colspan="4" ><b>Pages<b></td>
+  </tr>
+  <tr>
+    <td><a href="miso.html"><b>Midwest Independent System Operator<b></a></td>
+    <td><a href="reg.html">Regions</a></td>
+    <td><a href="mge.html">Madison Gas and Electric Loadzone</a> </td>
+    <td><a href="kwe.html">Kewaunee Nuclear Power Plant</a> </td>
+  </tr>
+  <tr>
+    <td><a href="pow.html">Power Flow</a></td>
+    <td><a href="pow-ball.html">Energy Ball</a></td>
+  </tr>
+  <tr>
+    <td colspan="4">..........................................................................................................................................................................................................</td>
+  </tr>
+  <tr>
+    <td class="home" colspan="2"><a href="index.html">Home</a></td>
+    <td colspan="2">
+      <a href="ref.html">References</a>
+    </td>
+  </tr>
+</table>
+
+    
+
+  </body>
+</html>

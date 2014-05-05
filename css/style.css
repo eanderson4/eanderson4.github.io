@@ -12,6 +12,25 @@
 #spacer {
     width:800px;
     height:500px;
+}    
+#spacer div {
+    width: 183px;
+    height: auto;
+    padding: 10px;
+    background-color: lightgreen;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+}
+#spacer div p {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 20px;
 }
 #graph2 {
 	 width:750px; 

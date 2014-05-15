@@ -42,6 +42,7 @@
 #nodetitle {
     font-weight:bold;
     font-size:135%;
+    padding-top:30px;
     padding-bottom:20px;
 }
 
@@ -76,6 +77,8 @@ svg {
 
 .xaxis path,
 .xaxis line,
+.xaxis2 path,
+.xaxis2 line,
 .yaxis path,
 .yaxis line{
     fill: none;
@@ -90,6 +93,7 @@ label {
 }
 
 .xaxis text,
+.xaxis2 text,
 .yaxis text {
     font-family: sans-serif;
     font-size: 11px;
@@ -186,4 +190,20 @@ hr.break{
     font-family: sans-serif;
     font-size: 16px;
     line-height: 20px;
+}
+
+
+.bar rect {
+      fill: steelblue;
+        shape-rendering: crispEdges;
+	}
+
+.bar text {
+      fill: #fff;
+      }
+
+.axis path, .axis line {
+      fill: none;
+        stroke: #000;
+	shape-rendering: crispEdges;
 }

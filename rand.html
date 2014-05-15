@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Power Flow - Random Branch Flow</title>
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+<script type="text/javascript"
+	  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+
+  </head>
+  <body>
+    <div id="title">Random Branch Flow</div>
+The linear shift factor will give you a sensitivity of power flow to random net injects.  Assuming a subset of nodes has volatile net injects that are gaussian random variables, the linear shift factor for a fixed slack distribution hits the random vector and produces a translated and scaled gaussian.  This gaussian of random power flows is scaled,translated, and truncated due to the piece-wise linear failure distribution of the line to find the probability of failure for each line flow.
+
+<div id="tooltip" class="hidden">
+  <p><strong><span id="name">Important Label Heading</span></strong></p>
+  <p><span id="ex">100</span></p>
+  <p><span id="var">100</span></p>
+  <p><span id="min">100</span></p>
+  <p><span id="max">100</span></p>
+  <p><span id="dif">100</span></p>
+  <p><span id="neg">100</span></p>
+</div>
+<br/>
+
+<div id="histgraph"></div>
+<div id="histgraph2"></div>
+
+
+
+    <script type="text/javascript" src="js/d3.v3.js"></script>    
+    <script type="text/javascript">
+      var dataset=[];
+      var flows = [];
+      var fails = [];
+      d3.csv("data/rand.csv",function(error, data) {
+
+      if (error) { 
+       console.log(error);
+      }
+      else {
+      console.log(data);
+      dataset = data
+      for (var key in dataset) {
+      if(dataset[key].fail){
+      fails.push(dataset[key].fail);
+      flows.push(dataset[key].flow);
+      }
+      }
+      generateVis("Line Failure Probability",fails,800,500);
+      generateVis("Power Flow",flows,460,200);
+
+      }
+
+      });
+      
+      function generateVis(title,values,wt,ht) {
+
+      var numticks=27;
+ 
+      // A formatter for counts.
+      var formatCount = d3.format(",.0f");
+
+      var margin = {top: 10, right: 20, bottom: 30, left: 40},
+          width = wt - margin.left - margin.right,
+          height = ht - margin.top - margin.bottom;
+
+      var minx = d3.min(values);
+      var maxx = d3.max(values);;
+
+
+
+      var x = d3.scale.linear()
+          .domain([minx, maxx])
+          .range([0, width]);
+
+      // Generate a histogram using twenty uniformly-spaced bins.
+      var data = d3.layout.histogram()
+          .bins(x.ticks(numticks))
+          (values);
+
+      var y = d3.scale.linear()
+          .domain([0, d3.max(data, function(d) { return d.y; })])
+          .range([height, 0]);
+
+      var xAxis = d3.svg.axis()
+          .scale(x)
+          .orient("bottom");
+
+      d3.select("#histgraph").append("center").append("div")
+        .attr("id","nodetitle")
+        .text(title);
+
+      var svg = d3.select("#histgraph").append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", 1.9*height + margin.top + margin.bottom+107)
+          .style("border", "3px solid black")
+        .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      console.log(data);
+
+      var bar = svg.selectAll(".bar")
+          .data(data)
+        .enter().append("g")
+          .attr("class", "bar")
+          .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+
+      bar.append("rect")
+          .attr("x", 1)
+          .attr("width", function(d) { console.log(d);return x(d.x+d.dx) -x(d.x) -1; })
+          .attr("height", function(d) { return height - y(d.y); });
+
+      bar.append("text")
+          .attr("dy", ".75em")
+          .attr("y", 6)
+          .attr("x", function(d){ return  ( x(d.x+d.dx)-x(d.x) ) / 2; })
+          .attr("text-anchor", "middle")
+          .text(function(d) { return formatCount(d.y); });
+
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis);
+
+
+
+      console.log(minx,maxx);
+      
+      var circles = svg.selectAll("circle")
+       .data(values)
+       .enter()
+       .append("circle");
+      
+      circles
+       .attr("cx", function(d){ return x(d); })
+       .attr("cy", height+42)
+       .attr("r",5.72*width/800)
+       .style("opacity",100/values.length)
+      ;
+
+      var htop=height+75;
+      var h2 = .9*ht;
+
+      var totalprob=0;
+      var numvals=values.length;
+      var probint=1/numvals;
+      var sorted=values.sort();
+      console.log(sorted,numvals);
+
+      var y2 = d3.scale.linear()
+          .domain([0, 1])
+          .range([h2, 0]);
+
+      var yAxis = d3.svg.axis()
+          .scale(y2)
+          .orient("left");
+      svg.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(0,"+htop+")")
+          .call(yAxis);
+
+      var xAxis2 = d3.svg.axis()
+          .scale(x)
+          .orient("bottom");
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0,"+(htop+h2)+")")
+          .call(xAxis2);
+      
+
+
+
+
+      var pairs=[];
+
+  
+      for( i in sorted){
+      pairs.push([probint*i,sorted[i]]);
+      totalprob=totalprob+probint*sorted[i];
+      }
+
+      console.log(pairs);
+      console.log(totalprob);
+
+      var circles2 = svg.selectAll("square")
+       .data(pairs)
+       .enter()
+       .append("circle");
+      
+      circles2
+       .attr("cx", function(d){ return x(d[1]); })
+       .attr("cy", function(d){ return htop+h2-y2(1-d[0]); } )
+       .attr("r",2.57*width/800)
+       .style("opacity",200/values.length)
+      ;
+
+
+}
+
+
+      
+   </script>
+
+
+
+
+  <hr class="break" />
+
+<table class="pages">
+  <tr>
+    <td class="linktitle" colspan="4" ><b>Pages<b></td>
+  </tr>
+  <tr>
+    <td><a href="miso.html"><b>Midwest Independent System Operator<b></a></td>
+    <td><a href="reg.html">Regions</a></td>
+    <td><a href="mge.html">Madison Gas and Electric Loadzone</a> </td>
+    <td><a href="kwe.html">Kewaunee Nuclear Power Plant</a> </td>
+  </tr>
+  <tr>
+    <td><a href="pow.html">Power Flow</a></td>
+  </tr>
+  <tr>
+    <td colspan="4">..........................................................................................................................................................................................................</td>
+  </tr>
+  <tr>
+    <td class="home" colspan="2"><a href="index.html">Home</a></td>
+    <td colspan="2">
+      <a href="ref.html">References</a>
+    </td>
+  </tr>
+</table>
+
+
+
+  </body>
+</html>

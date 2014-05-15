@@ -116,7 +116,7 @@ function(d) {
 
       var lW = d3.scale.linear()
           .domain([d3.min(dt.edges,function(d){return Math.abs(d.flow);}), d3.max(dt.edges,function(d){return Math.abs(d.flow);})])
-          .range([2.5, 7]);
+          .range([.35, 7]);
 
    var maxD = d3.max(dt.nodes,function(d){ return d.ni; } );
    var maxG = d3.max(dt.nodes,function(d){ return -d.ni; } );

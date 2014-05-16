@@ -31,38 +31,84 @@ The linear shift factor will give you a sensitivity of power flow to random net 
 </div>
 <br/>
 
-<div id="histgraph"></div>
-<div id="histgraph2"></div>
-
+<div id="wrapper">
+<div id="histgraph">
+<center><div id="nodetitle">Line Failure Probability</div></center>
+<div id="fail"></div>
+<center>
+<table>
+<tr>
+<td>
+<div id="controls">Mean: 
+<select id="selectmean">
+  <option value="1">0.5</option>
+  <option value="2">0.8</option>
+  <option value="3">0.9</option>
+  <option value="4" selected>1</option>
+  <option value="5">1.1</option>
+  <option value="6">1.2</option>
+</select>
+<br/>
+Var:
+<select id="selectvar">
+  <option value="1">0.001</option>
+  <option value="2">0.005</option>
+  <option value="3" selected>0.01</option>
+  <option value="4">0.025</option>
+  <option value="5">0.05</option>
+  <option value="6">0.1</option>
+</select>
+<br/><br/>
+<b>Sample</b>
+<div id="samplemean">100</div>
+<div id="samplevar">100</div>
+<div id="samplestdv">100</div>
+</div>
+</td>
+<td>&nbsp</td>
+<td>
+<center><div id="nodetitle">Power Flow</div></center>
+<div id="flow"></div>
+</td>
+</tr>
+</table>
+</center>
+</div>
+</div>
+</div>
 
 
     <script type="text/javascript" src="js/d3.v3.js"></script>    
     <script type="text/javascript">
-      var dataset=[];
       var flows = [];
       var fails = [];
-      d3.csv("data/rand.csv",function(error, data) {
+      var selectionmean=4;
+      var selectionvar=3;
+      
+      d3.select("#selectmean").attr("selectedIndex","-1");
+
+      d3.csv("data/fail43.csv",function(error, data) {
 
       if (error) { 
        console.log(error);
       }
       else {
       console.log(data);
-      dataset = data
-      for (var key in dataset) {
-      if(dataset[key].fail){
-      fails.push(dataset[key].fail);
-      flows.push(dataset[key].flow);
+      for (var key in data) {
+      if(data[key].fail){
+      fails.push(data[key].fail);
+      flows.push(data[key].flow);
       }
       }
-      generateVis("Line Failure Probability",fails,800,500);
-      generateVis("Power Flow",flows,460,200);
+      calcStat(flows);
+      generateVis("Line Failure Probability","#fail",fails,452,100);
+      generateVis("Power Flow","#flow",flows,327,75);
 
       }
 
       });
       
-      function generateVis(title,values,wt,ht) {
+      function generateVis(title,id,values,wt,ht) {
 
       var numticks=27;
  
@@ -94,19 +140,17 @@ The linear shift factor will give you a sensitivity of power flow to random net 
       var xAxis = d3.svg.axis()
           .scale(x)
           .orient("bottom");
+      
+      d3.select("#histgraph")
+       .attr("width",width+margin.left+margin.right);
+      
 
-      d3.select("#histgraph").append("center").append("div")
-        .attr("id","nodetitle")
-        .text(title);
-
-      var svg = d3.select("#histgraph").append("svg")
+      var svg = d3.select(id).append("svg")
           .attr("width", width + margin.left + margin.right)
-          .attr("height", 1.9*height + margin.top + margin.bottom+107)
+          .attr("height", 3*height + margin.top + margin.bottom+157)
           .style("border", "3px solid black")
         .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      console.log(data);
 
       var bar = svg.selectAll(".bar")
           .data(data)
@@ -116,7 +160,7 @@ The linear shift factor will give you a sensitivity of power flow to random net 
 
       bar.append("rect")
           .attr("x", 1)
-          .attr("width", function(d) { console.log(d);return x(d.x+d.dx) -x(d.x) -1; })
+          .attr("width", function(d) { return x(d.x+d.dx) -x(d.x) -1; })
           .attr("height", function(d) { return height - y(d.y); });
 
       bar.append("text")
@@ -130,8 +174,6 @@ The linear shift factor will give you a sensitivity of power flow to random net 
           .attr("class", "x axis")
           .attr("transform", "translate(0," + height + ")")
           .call(xAxis);
-
-
 
       console.log(minx,maxx);
       
@@ -148,13 +190,12 @@ The linear shift factor will give you a sensitivity of power flow to random net 
       ;
 
       var htop=height+75;
-      var h2 = .9*ht;
+      var h2 = 2*ht;
 
       var totalprob=0;
       var numvals=values.length;
       var probint=1/numvals;
       var sorted=values.sort();
-      console.log(sorted,numvals);
 
       var y2 = d3.scale.linear()
           .domain([0, 1])
@@ -178,8 +219,6 @@ The linear shift factor will give you a sensitivity of power flow to random net 
       
 
 
-
-
       var pairs=[];
 
   
@@ -188,7 +227,6 @@ The linear shift factor will give you a sensitivity of power flow to random net 
       totalprob=totalprob+probint*sorted[i];
       }
 
-      console.log(pairs);
       console.log(totalprob);
 
       var circles2 = svg.selectAll("square")
@@ -202,6 +240,61 @@ The linear shift factor will give you a sensitivity of power flow to random net 
        .attr("r",2.57*width/800)
        .style("opacity",200/values.length)
       ;
+
+
+
+    selmean=d3.select("#selectmean").on("change",change);
+    selvar=d3.select("#selectvar").on("change",change);
+
+    function change(){
+    selectionmean=selmean.property("value");
+      selectionvar=selvar.property("value");
+    console.log(selectionmean,selectionvar);
+
+      var flows = [];
+      var fails = [];
+     
+    d3.csv("data/fail"+selectionmean+""+selectionvar+".csv", function(data) {
+      for (var key in data) {
+      if(data[key].fail){
+      fails.push(data[key].fail);
+      flows.push(data[key].flow);
+      }
+      }
+      d3.selectAll("svg").remove();
+      calcStat(flows);
+      generateVis("Line Failure Probability","#fail",fails,452,100);
+      generateVis("Power Flow","#flow",flows,327,75);
+    });
+
+      }
+      }
+      function calcStat(values){
+       var sum = 0;
+       var mean = 0;
+       for (val in values) {
+        sum += parseFloat(values[val]);   // must be a number
+       }
+       mean = sum/values.length;
+       
+       var variance = 0;
+       for (var val in values)  {
+        variance += (values[val]-mean)*(values[val]-mean);
+       }
+       variance = variance / (values.length-1)
+      
+       var stdDeviation = 0;
+       stdDeviation = Math.sqrt(variance);
+      
+       d3.select("#samplemean")
+        .text(" Mean: "+ mean.toFixed(2));
+      d3.select("#samplevar")
+      .text(  " Var: " + variance.toFixed(4) );
+      d3.select("#samplestdv")
+       .text(  " St Dv: "+ stdDeviation.toFixed(2));
+
+      console.log(mean,variance,stdDeviation);
+      								  
 
 
 }

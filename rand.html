@@ -18,7 +18,9 @@
   </head>
   <body>
     <div id="title">Random Branch Flow</div>
-The linear shift factor will give you a sensitivity of power flow to random net injects.  Assuming a subset of nodes has volatile net injects that are gaussian random variables, the linear shift factor for a fixed slack distribution hits the random vector and produces a translated and scaled gaussian.  This gaussian of random power flows is scaled,translated, and truncated due to the piece-wise linear failure distribution of the line to find the probability of failure for each line flow.
+<p>The linear shift factor will give you a sensitivity of power flow to random net injects.  Assuming a subset of nodes has volatile net injects that are gaussian random variables, the linear shift factor for a fixed slack distribution hits the random vector and produces a translated and scaled gaussian.  This gaussian of random power flows is scaled,translated, and truncated due to the piece-wise linear failure distribution of the line to find the probability of failure for each line flow.</p>
+
+<p>There are two graphs, one which contains information about line failures given the piecewise linear function based off line flow.  The second graph gives information about the random power flow on a branch.  The top of each graph is a histogram of the samples to represent the approximate probability density function of each random variable. The middle is the points plotted on a 1 dimensional axis.  The bottom of the graph is the cumulative distribution function for the given sample of points.</p>
 
 <div id="tooltip" class="hidden">
   <p><strong><span id="name">Important Label Heading</span></strong></p>
@@ -39,6 +41,7 @@ The linear shift factor will give you a sensitivity of power flow to random net 
 <table>
 <tr>
 <td>
+<br/>
 <div id="controls">Mean: 
 <select id="selectmean">
   <option value="1">0.5</option>
@@ -58,11 +61,15 @@ Var:
   <option value="5">0.05</option>
   <option value="6">0.1</option>
 </select>
-<br/><br/>
-<b>Sample</b>
+<br/>
+<h3>Sample</h3>
+<div id="samplecount">100</div><br/>
+<u>Flow</u>
 <div id="samplemean">100</div>
 <div id="samplevar">100</div>
-<div id="samplestdv">100</div>
+<div id="samplestdv">100</div><br/>
+<u>Prob</u>
+<div id="sampleprob">100</div>
 </div>
 </td>
 <td>&nbsp</td>
@@ -76,8 +83,11 @@ Var:
 </div>
 </div>
 </div>
-
-
+<br/>
+<p>
+The 2 toggles for Mean and Var on the left middle of the graph display can be used to toggle through the 36 samples.
+</p>
+<br/>
     <script type="text/javascript" src="js/d3.v3.js"></script>    
     <script type="text/javascript">
       var flows = [];
@@ -224,10 +234,14 @@ Var:
   
       for( i in sorted){
       pairs.push([probint*i,sorted[i]]);
-      totalprob=totalprob+probint*sorted[i];
+      if(id == "#fail")  totalprob=totalprob+probint*sorted[i];
       }
 
-      console.log(totalprob);
+      if(id == "#fail"){
+       console.log(totalprob);
+       d3.select("#sampleprob")
+        .text(  " T Pr: "+ totalprob.toFixed(3));
+      }
 
       var circles2 = svg.selectAll("square")
        .data(pairs)
@@ -292,6 +306,9 @@ Var:
       .text(  " Var: " + variance.toFixed(4) );
       d3.select("#samplestdv")
        .text(  " St Dv: "+ stdDeviation.toFixed(2));
+      d3.select("#samplecount")
+       .text(  " Count: "+ values.length);
+
 
       console.log(mean,variance,stdDeviation);
       								  

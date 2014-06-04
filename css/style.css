@@ -16,6 +16,11 @@
     -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 }
+#datanote {
+width:780px;
+text-align:right;
+margin:10px;
+}
 #histgraph {
 	 margin-left:auto;
 	 margin-right:auto;

@@ -118,7 +118,7 @@ Y
         .enter().append("circle")
           .attr("r", function(d){ return r(parseFloat(d.Var));  })
           .attr("transform", transform)
-	.attr("fill","lightblue")
+	.attr("fill","blue")
       .on("mouseover", function(d){
       d3.select(this).attr("fill","red");
 
@@ -150,10 +150,10 @@ Y
       d3.select(this)
       .transition()
       .duration(250)
-      .attr("fill","blue")
-   .attr("stroke","magenta")
+      .attr("fill","lightblue")
+   .attr("stroke","black")
    .attr("stroke-width",function(d) {
-     return r(d.Var)/2.5;
+     return r(d.Var)/2.75;
     })
       
       //Hide the tooltip

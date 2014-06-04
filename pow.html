@@ -18,15 +18,19 @@
   <p><span id="tgen">100</span></p>
   </div>
 </div>
-
 <div id="titlescent">Here is a 118 bus grid.</div>
 <br/>
+    <div id="powerdata">
+      <a href="data/node.txt">Data</a>
+    </div>
 <select>
   <option value="data/case14.json">case14</option>
   <option value="data/case30.json">case30</option>
   <option value="data/case118.json">case118</option>
   <option value="data/case300.json">case300</option>
 </select>
+
+
 
 
 
@@ -95,6 +99,8 @@
 
   d3.select("#titlescent")
   .text("This is a "+numNodes+" bus grid.");
+  
+  d3.select("#powerdata").select('a').attr("href","data/case"+numNodes+".json");
 
 
   //Initialize a default force layout, using the nodes and edges in dataset

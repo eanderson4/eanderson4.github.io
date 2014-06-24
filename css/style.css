@@ -63,6 +63,25 @@ margin-right:30px;
 	 margin-left:auto;
 	 margin-right:auto;
 }
+#wrap {
+    width:800px;
+    pading:15px;
+    padding-top:22px;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+    border: 2px solid #b5d9ea;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+center p {
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+}
+
 
 #nodetitle {
     font-weight:bold;
@@ -72,17 +91,68 @@ margin-right:30px;
 }
 
 #title {
-	 font-weight: bold;
-	 font-size: 183%;
-	 text-align:center;
-	 margin-bottom:30px;
-	 padding-left:30px;
-	 
+    display:inline-block;
+    font-weight: bold;
+    font-size: 227%;
+    text-align:center;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom:0px;
+    padding-left:30px;
+    padding-right:30px;
+    padding-top:5px;
+    padding-bottom:5px;
+    background-color:lightblue;
+    background: #c3eafb url('/images/white-highlight.png') top left repeat-x;
+    border: 2px solid #b5d9ea;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -webkit-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; 
+    -moz-box-shadow: rgba(0,0,0,0.5) 2px 2px 2px; /* FF 3.5+ */	
+}
+#lilnum {
+    position: relative;
+    right: -23px;
+    top: 10px;
+    font-weight: bold;
+    font-size:127%;
+    padding:0;
+    margin: 10px 0 0 15px;
 }
 .annotation {
     font-size: 12px !important;
 }
 
+
+blockquote {
+    margin: 1em 3em;
+    color: #999;
+    border-left: 2px solid #999;
+    padding-left: 1em; 
+}
+
+
+
+h3 {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 157%;
+    color: navy; 
+    font-weight: bold;
+    padding: 2px; 
+    padding-left: 35px;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+    border-bottom: dashed 1px navy; 
+} 
+
+p {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    padding: 0 0 0 5px;
+    font-size: 1em;
+    line-height: 1.25em;
+    margin: 1.25em 0;
+    text-align: justify;
+}
 
 svg {
     font: 10px sans-serif;
@@ -142,6 +212,11 @@ table.pages td.linktitle{
 hr.break{
     margin-top:17.235px;
     margin-bottom:5.75px;
+    border-color:navy;
+    border-width:2px;
+}
+blockquote p{
+    margin-bottom:3px;
 }
 
 #tooltip {

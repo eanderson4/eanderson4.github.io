@@ -10,13 +10,24 @@
 	    src="js/dygraph-combined.js"></script>
   </head>
   <body>
-    <div id="title">Madison Gas & Electric</div>
+    <center><div id="title">Madison Gas & Electric</div></center>
+<p>
+The major transmission networks in North America are currently divided into ten
+ISOs which run the wholesale electricity markets across the country. The Midwest
+Independent System Operator (MISO) is the designated ISO for the Midwest United
+States and Maintoba, Canada, which began market operation in 2005. In 2011,
+the value of the real time load cleared was $18 billion. This money is dispersed to
+generating assets, transmission improvements, wind integration, long term planning,
+and to run MISO. The pricing scenarios used in this paper will be taken from MISO’s
+market data. MISO’s mission is to ensure reliable, least-cost delivered electricity for
+consumers.
+</p>
 <h3>Summary</h3>
 <p>
 Here are the wholesale prices for utilitiy Madison Gas and Electric.  The prices on the grid are decided by an independent entity know as Midwest Independent Systems Operators (MISO).  They clear the market for bulk electricity in two stages, a day-ahead market and a real-time market.  The real-time market is on a rolling 5 minute basis, so every 5 minutes they have to clear a market which involves finance calculations and more differently power flow equations.  The day-ahead market is difficult as well and is more about strategic decisions for the future uncertain demand.  
-
-    <div id="graphdiv"></div>
+<div id="wrap">
     <center>
+    <div id="graphdiv"></div>
     <p><b>Show Series:</b></p>
     <p>
       <input type=checkbox id="0" checked onClick="change(this)">
@@ -36,8 +47,7 @@ Here are the wholesale prices for utilitiy Madison Gas and Electric.  The prices
 	<a href="mge-export.html">Export Graph</a> 
     </div>
     </center>
-
-    </div>
+</div>
 
 
 
@@ -77,8 +87,9 @@ MCC is Cost of Congestion component of LMP <br/>
 MLC is Loss component of LMP <br/>
 
 <a name="graphtwo"></a>
-    <div id="graph2"></div>
+<div id="wrap">
     <center>
+    <div id="graph2"></div>
     <p><b>Show Series:</b></p>
     <p>
       <table><tr><td>
@@ -105,27 +116,28 @@ MLC is Loss component of LMP <br/>
     <div id="datanote">
       <a href="data/cong.txt">Data</a>
     </div>
-
     </center>
+</div>
 
 
-
-
+<h3>Citations</h3>
+<div id="lilnum">[1] MGE's Generation Assets</div>
 <blockquote cite="http://www.mge.com/about-mge/electricity/elec-from.htm">
-<h4>MGE's Electricity Sources</h4>
 <p>
-Here is MGE's Electricity mixture for present
+Here is MGE's current electricity production portfolio from the source themselves.
 </p>
 <footer>
 -<a href="http://www.mge.com/about-mge/electricity/elec-from.htm">MGE's current sourcing</a>
 </footer>
 </blockquote>
 
+<!--#include file="footer.html" -->
+
 
   <hr class="break" />
 <div class="sitemap">
 <ul id="utilityNav">
-  <li><a href="info.html">Contact</a></li>
+  <li><a href="mailto:eric@eja.info">Contact</a></li>
 </ul>
 <h1>Power Systems</h1>
 <h2>Formulations, Calculations, and Vizualizations</h2>
@@ -155,33 +167,39 @@ Here is MGE's Electricity mixture for present
 	<li><a href="cas.html">Cascading Failures</a></li>
       </ul>
     </li>
+    <li><a href="dyn.html">Dynamics</a>
+      <ul>
+	<li><a href="crit.html">Critical Points</a></li>
+      </ul>
+    </li>
   </ul>
   </li>
   <ul>
   <li><a href="tweak.html">Enhancements</a>
     <ul>
       <li><a href="risk.html">Risk Based Dispatch</a>
-      <ul>
-	<li><a href="crit.html">Critical Points</a></li>
-      </ul>
       </li>
 
       <li><a href="rand.html">Random Injects</a>
     <ul>
       <li><a href="gauss.html">Gaussian Flows</a></li>
-      <li><a href="gauss.html">Piece-wise Risk Function</a></li>
+      <li><a href="comp.html">Risk Composite</a></li>
     </ul>
     </li>
     <li><a href="store.html">Energy Storage</a>
       <ul>
-	<li><a href="n1.html">Supercharger Network and the Gigafactory</a></li>
+	<li><a href="val.html">Efficiency, Value, and Storage Saturation</a></li>
       </ul>
     </li>
   </ul>
   </li>
   <li><a href="project.html">Project Info</a>
   <ul>
-    <li><a href="ref.html">About Me</a></li>
+    <li><a href="eric.html">About Me</a>
+    <ul>
+    <li><a href="work.html">Other Work</a></li>
+    </ul>
+    </li>
     <li><a href="ref.html">References</a></li>
   </ul>
   </li>

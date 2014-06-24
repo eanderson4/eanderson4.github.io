@@ -69,6 +69,8 @@
 	margin: 45px 0 0 0;
 	float: left;
 	width: 100%;
+	position: relative;
+	top: -45px;
 }
 #primaryNav #home {
 	display: block;
@@ -196,7 +198,7 @@
 	max-width: 50%;
 	margin-right: 10px;
 	position: relative;
-	top: 75px;
+	top: 35px;
 }
 #utilityNav li {
 	float: left;

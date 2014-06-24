@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <title>MISO - Madison Gas and Electric</title>
     <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
-    
+
+    <link rel="stylesheet" type="text/css" media="screen, print" href="css/slickmap.css" />
     <script type="text/javascript"
 	    src="js/dygraph-combined.js"></script>
   </head>
@@ -122,32 +123,72 @@ Here is MGE's Electricity mixture for present
 
 
   <hr class="break" />
+<div class="sitemap">
+<ul id="utilityNav">
+  <li><a href="info.html">Contact</a></li>
+</ul>
+<h1>Power Systems</h1>
+<h2>Formulations, Calculations, and Vizualizations</h2>
+<ul id="primaryNav" class="col4">
+  <li id="home"><a href="http://eja4.info">Home</a></li>
+  <li><a href="bulk.html">Bulk Power System</a>
+  <ul>
+    <li><a href="us.html">United States Power Grid's</a>
+    <li><a href="miso.html">Midwest Independent System Operator</a>
+      <ul>
+	<li><a href="reg.html">Regions</a></li>
+	<li><a href="mge.html">Madison Gas and Electric Loadzone</a> </li>
+	<li><a href="kwe.html">Kewaunee Nuclear Power Plant</a> </li>
+      </ul>
+  </ul>
+  </li>
+  <li><a href="solve.html">Network Basics</a>
+  <ul>
+    <li><a href="pow.html">Power Flow</a>
+      <ul>
+	<li><a href="econ.html">Economic Dispatch</a></li>
+      </ul>
+    </li>
+    <li><a href="rel.html">Reliability</a>
+      <ul>
+	<li><a href="n1.html">N-1 Criteria</a></li>
+	<li><a href="cas.html">Cascading Failures</a></li>
+      </ul>
+    </li>
+  </ul>
+  </li>
+  <ul>
+  <li><a href="tweak.html">Enhancements</a>
+    <ul>
+      <li><a href="risk.html">Risk Based Dispatch</a>
+      <ul>
+	<li><a href="crit.html">Critical Points</a></li>
+      </ul>
+      </li>
 
-<table class="pages">
-  <tr>
-    <td class="linktitle" colspan="4" ><b>Pages<b></td>
-  </tr>
-  <tr>
-    <td><a href="miso.html"><b>Midwest Independent System Operator<b></a></td>
-    <td><a href="reg.html">Regions</a></td>
-    <td><a href="mge.html">Madison Gas and Electric Loadzone</a> </td>
-    <td><a href="kwe.html">Kewaunee Nuclear Power Plant</a> </td>
-  </tr>
-  <tr>
-    <td><a href="pow.html">Power Flow</a></td>
-    <td><a href="rand.html">Random Flow</a></td>
-  </tr>
-  <tr>
-    <td colspan="4">..........................................................................................................................................................................................................</td>
-  </tr>
-  <tr>
-    <td class="home" colspan="2"><a href="index.html">Home</a></td>
-    <td colspan="2">
-      <a href="ref.html">References</a>
-    </td>
-  </tr>
-</table>
+      <li><a href="rand.html">Random Injects</a>
+    <ul>
+      <li><a href="gauss.html">Gaussian Flows</a></li>
+      <li><a href="gauss.html">Piece-wise Risk Function</a></li>
+    </ul>
+    </li>
+    <li><a href="store.html">Energy Storage</a>
+      <ul>
+	<li><a href="n1.html">Supercharger Network and the Gigafactory</a></li>
+      </ul>
+    </li>
+  </ul>
+  </li>
+  <li><a href="project.html">Project Info</a>
+  <ul>
+    <li><a href="ref.html">About Me</a></li>
+    <li><a href="ref.html">References</a></li>
+  </ul>
+  </li>
 
+
+</ul>
+</div>
     
     <script type="text/javascript">
       g2 = new Dygraph(

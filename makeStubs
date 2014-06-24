@@ -1,0 +1,17 @@
+#!/bin/bash
+
+for i in bulk us solve econ rel n1 cas dyn crit tweak risk gauss comp store val project dc gen eric work
+do
+    if [ -f $i.html ]
+    then 
+	echo "$i File Exists "
+    else
+	echo "Make File $i"
+	cat stub > $i.html
+	echo "<title> $i </title> " >> $i.html
+	echo "</head>" >> $i.html
+	echo "<body>" >> $i.html
+	echo "<div id="title"> $i </div> " >> $i.html
+	cat back >> $i.html
+    fi
+done

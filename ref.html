@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>References</title>
     <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
-
+    <link rel="stylesheet" type="text/css" media="screen, print" href="css/slickmap.css" />
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -20,10 +20,10 @@
     <div id="title">References</div>
 
 <h2>Calculations</h2>
+<h3 class="block">Power Systems</h3>
 <blockquote cite="http://www.pserc.cornell.edu//matpower/">
-<h3>Matpower for Matlab</h3>
 <p>
-Great Matlab toolkit for Power Systems
+Matpower is a great Matlab toolkit for research calculations on Power Systems.  Various test cases are provided and full AC power flows can be calculated along with DC power flows, economic dispatch models, ect.  It is easy to modify for individual needs.
 </p>
 <footer>
 -<a href="http://www.pserc.cornell.edu/matpower/">Matpower</a><br/>
@@ -31,18 +31,18 @@ Great Matlab toolkit for Power Systems
 </footer>
 </blockquote>
 
+  <h3 class="block">Linear Algebra</h3>
 <blockquote cite="http://www.pserc.cornell.edu//matpower/">
-  <h3>Armadillo: C++ Linear Algebra</h3>
 <p>
-Good library for performing linear algebra in C++.
+Aramdillo C++ Linear Algebra library.  Easy to use and fast for performing linear algebra in C++.
 </p>
 <footer>
 -<a href="http://arma.sourceforge.net/">Armadillo</a><br/>
 </footer>
 </blockquote>
 
+<h3 class="block">Optimization</h3>
 <blockquote cite="http://www.ibm.com/us/en/">
-<h3>Optimization</h3>
 <p>
 CPLEX is a solid solver for linear programs and mixed-integer programs by IBM.  CONCERT is an api which has various interfaces for different programming languages.  I am using the c++ api to call cplex to solve the power flow problem.  CPLEX and CONCERT is available to all students through the Academic Initiative.
 </p>
@@ -53,8 +53,8 @@ CPLEX is a solid solver for linear programs and mixed-integer programs by IBM.  
 </blockquote>
 
 <h2>Web</h2>
+<h3 class="block">Graphing</h3>
 <blockquote cite="http://dygraphs.com/">
-<h3>Graphing Toolkit</h3>
 <p>
 The data was pulled from MISO's website and loaded into a sqlite3 database.  The database is pushed to a csv file that dygraphs can read.  Great examples were provided to easily add the needed options to get a beautiful display.  In addition, D3 was used and the tutorial from Scott Murray was priceless.
 </p>
@@ -65,8 +65,8 @@ The data was pulled from MISO's website and loaded into a sqlite3 database.  The
 </footer>
 </blockquote>
 
-<blockquote cite="http://dygraphs.com/">
-<h3>Math Tex</h3>
+<h3 class="block">Math</h3>
+<blockquote cite="http://www.mathjax.org/">
 <p>
 MathJax was used for math typeset
 </p>
@@ -75,8 +75,8 @@ MathJax was used for math typeset
 </footer>
 </blockquote>
 
-<blockquote cite="http://dygraphs.com/">
-<h3>Sitemap</h3>
+<h3 class="block">SiteMap</h3>
+<blockquote cite="http://astuteo.com/slickmap">
 <p>
 SlickMap CSS was used to style the sitemap
 </p>
@@ -86,8 +86,8 @@ SlickMap CSS was used to style the sitemap
 </blockquote>
 
 <h2>Data</h2>
+<h3 class="block">Midwest ISO</h3>
 <blockquote cite="https://www.misoenergy.org/Pages/Home.aspx">
-<h3>MISO</h3>
 <p>
   If your interested in this data, surely check out MISO's files. provided by MISO.  They have loads of publically available data through their site and have a LMP contour map of Real Time Prices</a>
 </p>
@@ -98,8 +98,8 @@ SlickMap CSS was used to style the sitemap
 </blockquote>
 
 <h2>Contributions</h2>
+<h3 class="block">Tools</h3>
 <blockquote cite="https://github.com/eanderson4">
-<h3>Tools</h3>
 <p>
 If your interested to do research with this data, I have packaged all the LMP data and have some basic tools for working with it on GitHub.  If you need the data packaged differently, let me know and I can work something out.  Feel free to send questions my way or let me know of any related projects you may be working on!  
 </p>
@@ -115,34 +115,7 @@ If your interested to do research with this data, I have packaged all the LMP da
 </blockquote>
 
 
-
-  <hr class="break" />
-
-<table class="pages">
-  <tr>
-    <td class="linktitle" colspan="4" ><b>Pages<b></td>
-  </tr>
-  <tr>
-    <td><a href="miso.html"><b>Midwest Independent System Operator<b></a></td>
-    <td><a href="reg.html">Regions</a></td>
-    <td><a href="mge.html">Madison Gas and Electric Loadzone</a> </td>
-    <td><a href="kwe.html">Kewaunee Nuclear Power Plant</a> </td>
-  </tr>
-  <tr>
-    <td><a href="pow.html">Power Flow</a></td>
-    <td><a href="rand.html">Random Flow</a></td>
-  </tr>
-  <tr>
-    <td colspan="4">..........................................................................................................................................................................................................</td>
-  </tr>
-  <tr>
-    <td class="home" colspan="2"><a href="index.html">Home</a></td>
-    <td colspan="2">
-      <a href="ref.html">References</a>
-    </td>
-  </tr>
-</table>
-
+<!--#include file="footer.html" -->
 
   </body>
 </html>

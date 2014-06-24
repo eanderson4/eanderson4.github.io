@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>MISO - Kewaunee Power Station</title>
+    <title>MISO - Regions</title>
     <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
-    
+    <link rel="stylesheet" type="text/css" media="screen, print" href="css/slickmap.css" />  
     <script type="text/javascript"
 	    src="js/dygraph-combined.js"></script>
   </head>
@@ -55,33 +55,7 @@ Economic analysis of the generator node in MISO.  The goals will be as follows
 
 <div id="console">struct&nbsp;group_info&nbsp;init_groups&nbsp;=&nbsp;{&nbsp;.usage&nbsp;=&nbsp;ATOMIC_INIT(2)&nbsp;};&nbsp;<br>&nbsp;<br>struct&nbsp;group_info&nbsp;*groups_alloc(int&nbsp;gidsetsize){&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;struct&nbsp;group_info&nbsp;*group_info;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;nblocks;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;i;&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;nblocks&nbsp;=&nbsp;(gidsetsize&nbsp;+&nbsp;NGROUPS_PER_BLOCK&nbsp;-&nbsp;1)&nbsp;/&nbsp;NGROUPS_PER_BLOCK;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;Make&nbsp;sure&nbsp;we&nbsp;always&nbsp;allocate&nbsp;at&nbsp;least&nbsp;one&nbsp;indirect&nbsp;block&nbsp;pointer&nbsp;*/&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;nblocks&nbsp;=&nbsp;nblocks&nbsp;?&nbsp;:&nbsp;1;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info&nbsp;=&nbsp;kmalloc(sizeof(*group_info)&nbsp;+&nbsp;nblocks*sizeof(gid_t&nbsp;*),&nbsp;GFP_USER);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!group_info)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;NULL;&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;ngroups&nbsp;=&nbsp;gidsetsize;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;nblocks&nbsp;=&nbsp;nblocks;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;atomic_set(&amp;group_info-&gt;usage,&nbsp;1);&nbsp;<br>&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(gidsetsize&nbsp;&lt;=&nbsp;NGROUPS_SMALL)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;blocks[0]&nbsp;=&nbsp;group_info-&gt;small_block;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;else&nbsp;{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;nblocks;&nbsp;i++)&nbsp;{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gid_t&nbsp;*b;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;=&nbsp;(void&nbsp;*)__get_free_page(GFP_USER);&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!b)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;goto&nbsp;out_undo_partial_alloc;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group_info-&gt;blocks[i]&nbsp;=&nbsp;b;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;group_info;&nbsp;<br></div>
   
-
-  <hr class="break" />
-
-<table class="pages">
-  <tr>
-    <td class="linktitle" colspan="4" ><b>Pages<b></td>
-  </tr>
-  <tr>
-    <td><a href="miso.html"><b>Midwest Independent System Operator<b></a></td>
-    <td><a href="reg.html">Regions</a></td>
-    <td><a href="mge.html">Madison Gas and Electric Loadzone</a> </td>
-    <td><a href="kwe.html">Kewaunee Nuclear Power Plant</a> </td>
-  </tr>
-  <tr>
-    <td><a href="pow.html">Power Flow</a></td>
-    <td><a href="rand.html">Random Flow</a></td>
-  </tr>
-  <tr>
-    <td colspan="4">..........................................................................................................................................................................................................</td>
-  </tr>
-  <tr>
-    <td class="home" colspan="2"><a href="index.html">Home</a></td>
-    <td colspan="2">
-      <a href="ref.html">References</a>
-    </td>
-  </tr>
-</table>
+<!--#include file="footer.html" -->
 
     
     <script type="text/javascript">

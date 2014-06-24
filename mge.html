@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>MISO - Madison Gas and Electric</title>
     <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
-
     <link rel="stylesheet" type="text/css" media="screen, print" href="css/slickmap.css" />
     <script type="text/javascript"
 	    src="js/dygraph-combined.js"></script>
@@ -28,20 +27,20 @@ Here are the wholesale prices for utilitiy Madison Gas and Electric.  The prices
 <div id="wrap">
     <center>
     <div id="graphdiv"></div>
-    <p><b>Show Series:</b></p>
-    <p>
+    <p class="cmds"><b>Show Series:</b></p>
       <input type=checkbox id="0" checked onClick="change(this)">
       <label for="0"> Day-Ahead</label></br>
       <input type=checkbox id="1" onClick="change(this)">
       <label for="1"> Real-Time</label></br>
       <input type=checkbox id="2" checked onClick="change(this)">
       <label for="2"> Residential</label>
-    </p>
-    <p><b>Rolling Averages:</b></p>
+    <p class="cmds"><b>Rolling Averages:</b></p>
+    <p class="padd">
     <a href="#" id="day" onClick="daily()">Daily</a>
     <a href="#" id="week" onClick="weekly()">Weekly</a>
     <a href="#" id="month" onClick="monthly()">Monthly</a>
     <a href="#" id="year" onClick="yearly()">Yearly</a>
+    </p>
     <div id="datanote">
       <a href="data/mge-full.txt">Data</a>
 	<a href="mge-export.html">Export Graph</a> 
@@ -90,8 +89,7 @@ MLC is Loss component of LMP <br/>
 <div id="wrap">
     <center>
     <div id="graph2"></div>
-    <p><b>Show Series:</b></p>
-    <p>
+    <p class="cmds"><b>Show Series:</b></p>
       <table><tr><td>
       <input type=checkbox id="0" checked onClick="change2(this)">
       <label for="0"> Day-Ahead LMP</label></br>
@@ -108,11 +106,13 @@ MLC is Loss component of LMP <br/>
       <label for="5"> Real-Time MLC</label>
       </td></tr></table>
     </p>
-    <p><b>Rolling Averages:</b></p>
+    <p class="cmds"><b>Rolling Averages:</b></p>
+    <p class="padd">
     <a href="#graphtwo" id="day" onClick="daily2()">Daily</a>
     <a href="#graphtwo" id="week" onClick="weekly2()">Weekly</a>
     <a href="#graphtwo" id="month" onClick="monthly2()">Monthly</a>
     <a href="#graphtwo" id="year" onClick="yearly2()">Yearly</a>
+    </p>
     <div id="datanote">
       <a href="data/cong.txt">Data</a>
     </div>
@@ -133,80 +133,6 @@ Here is MGE's current electricity production portfolio from the source themselve
 
 <!--#include file="footer.html" -->
 
-
-  <hr class="break" />
-<div class="sitemap">
-<ul id="utilityNav">
-  <li><a href="mailto:eric@eja.info">Contact</a></li>
-</ul>
-<h1>Power Systems</h1>
-<h2>Formulations, Calculations, and Vizualizations</h2>
-<ul id="primaryNav" class="col4">
-  <li id="home"><a href="http://eja4.info">Home</a></li>
-  <li><a href="bulk.html">Bulk Power System</a>
-  <ul>
-    <li><a href="us.html">United States Power Grid's</a>
-    <li><a href="miso.html">Midwest Independent System Operator</a>
-      <ul>
-	<li><a href="reg.html">Regions</a></li>
-	<li><a href="mge.html">Madison Gas and Electric Loadzone</a> </li>
-	<li><a href="kwe.html">Kewaunee Nuclear Power Plant</a> </li>
-      </ul>
-  </ul>
-  </li>
-  <li><a href="solve.html">Network Basics</a>
-  <ul>
-    <li><a href="pow.html">Power Flow</a>
-      <ul>
-	<li><a href="econ.html">Economic Dispatch</a></li>
-      </ul>
-    </li>
-    <li><a href="rel.html">Reliability</a>
-      <ul>
-	<li><a href="n1.html">N-1 Criteria</a></li>
-	<li><a href="cas.html">Cascading Failures</a></li>
-      </ul>
-    </li>
-    <li><a href="dyn.html">Dynamics</a>
-      <ul>
-	<li><a href="crit.html">Critical Points</a></li>
-      </ul>
-    </li>
-  </ul>
-  </li>
-  <ul>
-  <li><a href="tweak.html">Enhancements</a>
-    <ul>
-      <li><a href="risk.html">Risk Based Dispatch</a>
-      </li>
-
-      <li><a href="rand.html">Random Injects</a>
-    <ul>
-      <li><a href="gauss.html">Gaussian Flows</a></li>
-      <li><a href="comp.html">Risk Composite</a></li>
-    </ul>
-    </li>
-    <li><a href="store.html">Energy Storage</a>
-      <ul>
-	<li><a href="val.html">Efficiency, Value, and Storage Saturation</a></li>
-      </ul>
-    </li>
-  </ul>
-  </li>
-  <li><a href="project.html">Project Info</a>
-  <ul>
-    <li><a href="eric.html">About Me</a>
-    <ul>
-    <li><a href="work.html">Other Work</a></li>
-    </ul>
-    </li>
-    <li><a href="ref.html">References</a></li>
-  </ul>
-  </li>
-
-
-</ul>
-</div>
     
     <script type="text/javascript">
       g2 = new Dygraph(
